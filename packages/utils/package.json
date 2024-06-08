@@ -1,0 +1,52 @@
+{
+	"name": "@snilli/utils",
+	"version": "0.0.1",
+	"repository": "https://github.com/vercel/examples.git",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"dev": "pnpm build --watch",
+		"build": "rm -fr dist/* && tsc",
+		"lint": "TIMING=1 eslint \"**/*.{ts,tsx,js,jsx}\" --fix",
+		"clean": "rm -rf ./dist && rm -rf .turbo",
+		"clean-all": "rm -rf ./.dist && rm -rf .turbo && rm -rf node_modules"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": "./dist/index.js",
+		"./*": [
+			"./dist/*.js",
+			"./dist/*/index.js"
+		]
+	},
+	"files": [
+		"dist"
+	],
+	"typesVersions": {
+		"*": {
+			"*": [
+				"src/*",
+				"src/*/index"
+			]
+		}
+	},
+	"publishConfig": {
+		"typesVersions": {
+			"*": {
+				"*": [
+					"dist/*.d.ts",
+					"dist/*/index.d.ts"
+				]
+			}
+		}
+	},
+	"devDependencies": {
+		"eslint": "^8.57.0",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"clsx": "^2.1.1",
+		"tailwind-merge": "^2.3.0"
+	}
+}

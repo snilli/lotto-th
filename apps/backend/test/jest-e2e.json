@@ -1,0 +1,15 @@
+{
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": ".",
+	"testEnvironment": "node",
+	"testRegex": ".e2e-spec.ts$",
+	"transform": {
+		"^.+\\.(t|j)s$": "ts-jest"
+	},
+	"moduleNameMapper": {
+		"@lib/scrape-card/(.*)": "<rootDir>/../libs/scrape-card/src/$1",
+		"@lib/scrape-card": "<rootDir>/../libs/scrape-card/src",
+		"@lib/fs/(.*)": "<rootDir>/../libs/fs/src/$1",
+		"@lib/fs": "<rootDir>/../libs/fs/src"
+	}
+}
