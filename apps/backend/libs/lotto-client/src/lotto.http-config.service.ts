@@ -3,10 +3,10 @@ import { Injectable } from '@nestjs/common'
 import { HttpsAgent } from 'agentkeepalive'
 
 @Injectable()
-export class ScrapeCardHttpConfigService implements HttpModuleOptionsFactory {
+export class LottoHttpConfigService implements HttpModuleOptionsFactory {
 	createHttpOptions(): HttpModuleOptions {
 		return {
-			baseURL: 'https://gamefaqs.gamespot.com',
+			baseURL: 'https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/',
 			httpAgent: new HttpsAgent({ keepAlive: true }),
 			httpsAgent: new HttpsAgent({ keepAlive: true }),
 			timeout: 5000,

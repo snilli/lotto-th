@@ -1,4 +1,4 @@
-import Page from '@app/c/page'
+import Page from '@app/a/page'
 import { renderHook } from '@testing-library/react'
 import { test } from 'vitest'
 

@@ -1,10 +1,27 @@
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager'
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-
+import { ConfigModule } from '@nestjs/config'
+import { APP_INTERCEPTOR } from '@nestjs/core'
+import { LottoModule } from './lotto/lotto.module'
+import { MooModule } from './moo/moo.module';
 @Module({
-	imports: [],
-	controllers: [AppController],
-	providers: [AppService],
+	imports: [
+		CacheModule.register({
+			ttl: 86400,
+			max: 100,
+			isGlobal: true,
+		}),
+		ConfigModule.forRoot({
+			isGlobal: true,
+		}),
+		LottoModule,
+		MooModule,
+	],
+	providers: [
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: CacheInterceptor,
+		},
+	],
 })
 export class AppModule {}

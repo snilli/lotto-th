@@ -19,17 +19,29 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@lib/scrape-card": [
-        "libs/scrape-card/src"
-      ],
-      "@lib/scrape-card/*": [
-        "libs/scrape-card/src/*"
-      ],
       "@lib/fs": [
         "libs/fs/src"
       ],
       "@lib/fs/*": [
         "libs/fs/src/*"
+      ],
+      "@lib/lotto-client": [
+        "libs/lotto-client/src"
+      ],
+      "@lib/lotto-client/*": [
+        "libs/lotto-client/src/*"
+      ],
+      "@lib/time": [
+        "libs/time/src"
+      ],
+      "@lib/time/*": [
+        "libs/time/src/*"
+      ],
+      "@lib/drizzle-schema": [
+        "libs/drizzle-schema/src"
+      ],
+      "@lib/drizzle-schema/*": [
+        "libs/drizzle-schema/src/*"
       ]
     }
   }
