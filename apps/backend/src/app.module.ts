@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { LottoModule } from './lotto/lotto.module'
-import { MooModule } from './moo/moo.module';
 @Module({
 	imports: [
 		CacheModule.register({
@@ -15,7 +14,6 @@ import { MooModule } from './moo/moo.module';
 			isGlobal: true,
 		}),
 		LottoModule,
-		MooModule,
 	],
 	providers: [
 		{

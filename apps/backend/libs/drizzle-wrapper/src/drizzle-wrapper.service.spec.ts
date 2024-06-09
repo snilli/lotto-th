@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { TimeService } from './time.service'
+import { DrizzleWrapperService } from './drizzle-wrapper.service'
 
-describe('TimeService', () => {
-	let service: TimeService
+describe('DrizzlePGService', () => {
+	let service: DrizzleWrapperService
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [TimeService],
+			providers: [DrizzleWrapperService],
 		}).compile()
 
-		service = module.get<TimeService>(TimeService)
+		service = module.get<DrizzleWrapperService>(DrizzleWrapperService)
 	})
 
 	it('should be defined', () => {

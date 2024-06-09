@@ -1,23 +1,19 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
-  "rootDir": ".",
-  "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
-  "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
-  },
-  "moduleNameMapper": {
-    "@lib/fs/(.*)": "<rootDir>/../libs/fs/src/$1",
-    "@lib/fs": "<rootDir>/../libs/fs/src",
-    "@lib/lotto-client/(.*)": "<rootDir>/../libs/lotto-client/src/$1",
-    "@lib/lotto-client": "<rootDir>/../libs/lotto-client/src",
-    "@lib/time/(.*)": "<rootDir>/../libs/time/src/$1",
-    "@lib/time": "<rootDir>/../libs/time/src",
-    "@app/drizzle-schema/(.*)": "<rootDir>/../libs/drizzle-schema/src/$1",
-    "@app/drizzle-schema": "<rootDir>/../libs/drizzle-schema/src"
-  }
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": ".",
+	"testEnvironment": "node",
+	"testRegex": ".e2e-spec.ts$",
+	"transform": {
+		"^.+\\.(t|j)s$": "ts-jest"
+	},
+	"moduleNameMapper": {
+		"@lib/lotto-client/(.*)": "<rootDir>/../libs/lotto-client/src/$1",
+		"@lib/lotto-client": "<rootDir>/../libs/lotto-client/src",
+		"@lib/time/(.*)": "<rootDir>/../libs/time/src/$1",
+		"@lib/time": "<rootDir>/../libs/time/src",
+		"@lib/drizzle-schema/(.*)": "<rootDir>/../libs/drizzle-schema/src/$1",
+		"@lib/drizzle-schema": "<rootDir>/../libs/drizzle-schema/src",
+		"@lib/drizzle-wrapper/(.*)": "<rootDir>/../libs/drizzle-wrapper/src/$1",
+		"@lib/drizzle-wrapper": "<rootDir>/../libs/drizzle-wrapper/src"
+	}
 }

@@ -1,49 +1,49 @@
 {
-  "$schema": "https://json.schemastore.org/nest-cli",
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
-  "compilerOptions": {
-    "deleteOutDir": true,
-    "builder": "swc",
-    "typeCheck": true,
-    "webpack": true
-  },
-  "projects": {
-    "fs": {
-      "type": "library",
-      "root": "libs/fs",
-      "entryFile": "index",
-      "sourceRoot": "libs/fs/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/fs/tsconfig.lib.json"
-      }
-    },
-    "lotto-client": {
-      "type": "library",
-      "root": "libs/lotto-client",
-      "entryFile": "index",
-      "sourceRoot": "libs/lotto-client/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/lotto-client/tsconfig.lib.json"
-      }
-    },
-    "time": {
-      "type": "library",
-      "root": "libs/time",
-      "entryFile": "index",
-      "sourceRoot": "libs/time/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/time/tsconfig.lib.json"
-      }
-    },
-    "drizzle-schema": {
-      "type": "library",
-      "root": "libs/drizzle-schema",
-      "entryFile": "index",
-      "sourceRoot": "libs/drizzle-schema/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/drizzle-schema/tsconfig.lib.json"
-      }
-    }
-  }
+	"$schema": "https://json.schemastore.org/nest-cli",
+	"collection": "@nestjs/schematics",
+	"sourceRoot": "src",
+	"compilerOptions": {
+		"deleteOutDir": true,
+		"builder": "swc",
+		"typeCheck": true,
+		"webpack": true
+	},
+	"projects": {
+		"lotto-client": {
+			"type": "library",
+			"root": "libs/lotto-client",
+			"entryFile": "index",
+			"sourceRoot": "libs/lotto-client/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/lotto-client/tsconfig.lib.json"
+			}
+		},
+		"time": {
+			"type": "library",
+			"root": "libs/time",
+			"entryFile": "index",
+			"sourceRoot": "libs/time/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/time/tsconfig.lib.json"
+			}
+		},
+		"drizzle-schema": {
+			"type": "library",
+			"root": "libs/drizzle-schema",
+			"entryFile": "index",
+			"sourceRoot": "libs/drizzle-schema/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/drizzle-schema/tsconfig.lib.json"
+			}
+		},
+		"drizzle-wrapper": {
+			"type": "library",
+			"root": "libs/drizzle-wrapper",
+			"entryFile": "index",
+			"sourceRoot": "libs/drizzle-wrapper/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/drizzle-wrapper/tsconfig.lib.json"
+			}
+		}
+	}
 }
