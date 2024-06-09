@@ -5,8 +5,7 @@
 	"compilerOptions": {
 		"deleteOutDir": true,
 		"builder": "swc",
-		"typeCheck": true,
-		"webpack": true
+		"typeCheck": true
 	},
 	"projects": {
 		"lotto-client": {

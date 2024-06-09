@@ -1,13 +1,11 @@
-import { FireormModule } from '@app/fireorm'
-import { LottoClientModule } from '@app/lotto-client'
-import { TimeModule } from '@app/time'
+import { LottoClientModule } from '@lib/lotto-client'
+import { TimeModule } from '@lib/time'
 import { Module } from '@nestjs/common'
 import { LottoController } from './lotto.controller'
-import { LottoEntity } from './lotto.entity'
 import { LottoService } from './lotto.service'
 
 @Module({
-	imports: [LottoClientModule, TimeModule, FireormModule.forFeature([LottoEntity])],
+	imports: [LottoClientModule, TimeModule],
 	providers: [LottoService],
 	controllers: [LottoController],
 })

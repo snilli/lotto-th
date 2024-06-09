@@ -17,7 +17,8 @@ const monthMap = {
 	ตุลาคม: 10,
 	พฤศจิกายน: 11,
 	ธันวาคม: 12,
-}
+} as const
+
 export interface WeeklyPrizeModel {
 	year: number
 	month: number
@@ -146,7 +147,11 @@ export class LottoClientService {
 		return html
 	}
 
-	private extractDate([dayRaw, monthTh, yearTh]: string[]): DateExtraction {
+	private extractDate<T extends keyof typeof monthMap>([dayRaw, monthTh, yearTh]: [
+		string,
+		T,
+		string,
+	]): DateExtraction {
 		const date = Number(dayRaw)
 		const month = Number(monthMap[monthTh])
 		const year = Number(yearTh) - 543
@@ -164,7 +169,7 @@ export class LottoClientService {
 		$('table#dl_lottery_stats_list')
 			.find('td')
 			// .find('td>a')
-			.each((_, ele) => {
+			.each(function (_, ele) {
 				const res: WeeklyPrizeModel = {
 					prizeList: {
 						prize1: '',
@@ -181,30 +186,42 @@ export class LottoClientService {
 					date: 0,
 					detailUrl: '',
 				}
-				const [, tagA, , tagDiv] = ele['children']
-				const href = tagA['attribs']['href']
-				const dateExtracted = this.extractDate(
-					$(tagA).text().replace('ตรวจสลากกินแบ่งรัฐบาล งวด ', '').split(/\s+/),
-				)
-				res.date = dateExtracted.date
-				res.month = dateExtracted.month
-				res.year = dateExtracted.year
-				res.weekly = dateExtracted.weekly
-				if (res.year > 2000 || (res.year === 2000 && res.month > 4 && res.date > 1)) {
-					res.detailUrl = href
-				}
+				if (ele.type === 'tag') {
+					const [, tagA, , tagDiv] = ele['children']
+					const href = tagA['attribs']['href']
+					const dateExtracted = this.extractDate(
+						$(tagA).text().replace('ตรวจสลากกินแบ่งรัฐบาล งวด ', '').split(/\s+/) as [
+							string,
+							keyof typeof monthMap,
+							string,
+						],
+					)
+					res.date = dateExtracted.date
+					res.month = dateExtracted.month
+					res.year = dateExtracted.year
+					res.weekly = dateExtracted.weekly
+					if (res.year > 2000 || (res.year === 2000 && res.month > 4 && res.date > 1)) {
+						res.detailUrl = href
+					}
 
-				const list = $(tagDiv).find('div.lot-dc.lotto-fxl')
-				const prizeList = res.prizeList
-				prizeList.prize1 = list[0]['children'][0].data
-				if (res.year > 2015 || (res.year === 2015 && res.month > 8)) {
-					prizeList.first3Digi = list[1]['children'][0].data.split(/\s+/)
-					prizeList.last3Digi = list[2]['children'][0].data.split(/\s+/)
-				} else {
-					prizeList.last3Digi = list[2]['children'][0].data.split(/\s+/)
+					const list = Object.values($(tagDiv).find('div.lot-dc.lotto-fxl'))
+					const prizeList = res.prizeList
+
+					if (list[0].type === 'tag') {
+						prizeList.prize1 = list[0]['children'][0].data!
+					}
+
+					if (list[1].type === 'tag' && list[2].type === 'tag' && list[3].type === 'tag') {
+						if (res.year > 2015 || (res.year === 2015 && res.month > 8)) {
+							prizeList.first3Digi = list[1]['children'][0]?.data!.split(/\s+/)
+							prizeList.last3Digi = list[2]['children'][0]?.data!.split(/\s+/)
+						} else {
+							prizeList.last3Digi = list[2]['children'][0]?.data!.split(/\s+/)
+						}
+						prizeList.last2Digi = list[3]['children'][0].data!
+					}
+					info.push(res)
 				}
-				prizeList.last2Digi = list[3]['children'][0].data
-				info.push(res)
 			})
 		return info
 	}
@@ -218,7 +235,11 @@ export class LottoClientService {
 		const prizeList = model.prizeList
 		if (!prizeList.prize1) {
 			const dateExtracted = this.extractDate(
-				$('div.lotto-left > h2').text().replace('ตรวจสลากฯ ตรวจหวย ', '').split(/\s+/),
+				$('div.lotto-left > h2').text().replace('ตรวจสลากฯ ตรวจหวย ', '').split(/\s+/) as [
+					string,
+					keyof typeof monthMap,
+					string,
+				],
 			)
 			model.detailUrl = $('#dd_lottery_list > option:nth-child(1)')[0]['attribs']['value']
 			const list = $('div.lot-dc.lotto-fxl')

@@ -11,7 +11,7 @@ import { DrizzleWrapperConfig } from './drizzle-wrapper.interface'
 
 @Global()
 export class DrizzleWrapperModule extends ConfigurableModuleClass {
-	static register(options: typeof OPTIONS_TYPE): DynamicModule {
+	static register<T extends Record<string, unknown>>(options: typeof OPTIONS_TYPE): DynamicModule {
 		const { providers = [], exports = [], ...props } = super.register(options)
 		return {
 			...props,
@@ -21,7 +21,7 @@ export class DrizzleWrapperModule extends ConfigurableModuleClass {
 				{
 					provide: options?.tag || 'default',
 					useFactory: async (drizzleService: DrizzleWrapperService) => {
-						return await drizzleService.getDrizzle(options)
+						return await drizzleService.getDrizzle<T>(options)
 					},
 					inject: [DrizzleWrapperService],
 				},
@@ -29,7 +29,7 @@ export class DrizzleWrapperModule extends ConfigurableModuleClass {
 			exports: [...exports, options?.tag || 'default'],
 		}
 	}
-	static registerAsync(options: typeof ASYNC_OPTIONS_TYPE): DynamicModule {
+	static registerAsync<T extends Record<string, unknown>>(options: typeof ASYNC_OPTIONS_TYPE): DynamicModule {
 		const { providers = [], exports = [], ...props } = super.registerAsync(options)
 		return {
 			...props,
@@ -39,7 +39,7 @@ export class DrizzleWrapperModule extends ConfigurableModuleClass {
 				{
 					provide: options?.tag || 'default',
 					useFactory: async (drizzleService: DrizzleWrapperService, config: DrizzleWrapperConfig) => {
-						return await drizzleService.getDrizzle(config)
+						return await drizzleService.getDrizzle<T>(config)
 					},
 					inject: [DrizzleWrapperService, MODULE_OPTIONS_TOKEN],
 				},

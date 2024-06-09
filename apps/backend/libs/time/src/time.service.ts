@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-dayjs.extend(utc)
 
 export interface RangeFromTo {
 	from: number
@@ -10,6 +9,10 @@ export interface RangeFromTo {
 
 @Injectable()
 export class TimeService {
+	constructor() {
+		dayjs.extend(utc)
+	}
+
 	toRFC3339(timestamp: number, omitTime = false): string {
 		const date = new Date(timestamp * 1000)
 
