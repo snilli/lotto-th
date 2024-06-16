@@ -1,23 +1,24 @@
 {
-  "repository": "https://github.com/vercel/examples.git",
-  "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "start": "turbo run start",
-    "lint": "turbo run lint",
-    "clean": "turbo run clean",
-    "clean-all": "turbo run clean-all"
-  },
-  "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-turbo": "^2.0.3",
-    "eslint-plugin-turbo": "^2.0.3",
-    "turbo": "^2.0.3"
-  }
+	"repository": "https://github.com/vercel/examples.git",
+	"license": "MIT",
+	"private": true,
+	"name": "lotto-app",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"start": "turbo run start",
+		"lint": "turbo run lint",
+		"clean": "turbo run clean",
+		"clean-all": "turbo run clean-all"
+	},
+	"devDependencies": {
+		"eslint": "^8.57.0",
+		"eslint-config-turbo": "^2.0.3",
+		"eslint-plugin-turbo": "^2.0.3",
+		"turbo": "^2.0.3"
+	}
 }
