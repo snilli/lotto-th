@@ -16,7 +16,7 @@
 		"build:migration": "nest build migration",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
 		"start": "nest start",
-		"start:dev": "nest start --watch",
+		"dev": "nest start --watch",
 		"start:migrate": "node dist/cli/main-cli.js migrate --dir $(pwd)/drizzle",
 		"start:debug": "nest start --debug --watch",
 		"start:prod": "node dist/main",
