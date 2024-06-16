@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
-    "outDir": "./dist/app",
+    "outDir": "./dist/cli",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
@@ -28,7 +28,5 @@
       ],
     },
   },
-  "exclude": [
-    "main.cli.ts"
-  ]
+  "exclude": ["main.ts"]
 }

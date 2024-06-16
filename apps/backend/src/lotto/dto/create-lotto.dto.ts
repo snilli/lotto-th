@@ -1,16 +1,13 @@
-export interface CreateLottoInput {
-	year: number
-	month: number
-	date: number
-	weekly: string
-	prizeList: {
-		prize1: string
-		prize2: string[]
-		prize3: string[]
-		prize4: string[]
-		prize5: string[]
-		last2Digi: string
-		first3Digi?: string[]
-		last3Digi: string[]
-	}
-}
+import { createInsertSchema } from 'drizzle-zod'
+import { z } from 'zod'
+import { lotto } from '../schema/lotto'
+
+export type CreateLottoOption = typeof lotto.$inferInsert
+export const CreateLotto = createInsertSchema(lotto, {
+	prize2: z.string().array(),
+	prize3: z.string().array(),
+	prize4: z.string().array(),
+	prize5: z.string().array(),
+	first3Digi: z.string().array(),
+	last3Digi: z.string().array(),
+})

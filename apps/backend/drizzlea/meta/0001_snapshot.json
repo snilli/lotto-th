@@ -1,0 +1,292 @@
+{
+  "id": "76736821-92e7-4185-a7e3-e8eddf1b86a8",
+  "prevId": "801b18a1-ce3e-4406-9bd8-d0e6ded61e0c",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.lotto": {
+      "name": "lotto",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "date",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "year": {
+          "name": "year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "month": {
+          "name": "month",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date": {
+          "name": "date",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize1": {
+          "name": "prize1",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize2": {
+          "name": "prize2",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize3": {
+          "name": "prize3",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize4": {
+          "name": "prize4",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prize5": {
+          "name": "prize5",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last2Digi": {
+          "name": "last2Digi",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "first3Digi": {
+          "name": "first3Digi",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last3Digi": {
+          "name": "last3Digi",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "id_idx": {
+          "name": "id_idx",
+          "columns": [
+            {
+              "expression": "(\"id\"::date)",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "year_idx": {
+          "name": "year_idx",
+          "columns": [
+            {
+              "expression": "year",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "month_idx": {
+          "name": "month_idx",
+          "columns": [
+            {
+              "expression": "month",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "date_idx": {
+          "name": "date_idx",
+          "columns": [
+            {
+              "expression": "date",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "prize1_idx": {
+          "name": "prize1_idx",
+          "columns": [
+            {
+              "expression": "prize1",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "prize2_index": {
+          "name": "prize2_index",
+          "columns": [
+            {
+              "expression": "\"prize2\" jsonb_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "prize3_index": {
+          "name": "prize3_index",
+          "columns": [
+            {
+              "expression": "\"prize3\" jsonb_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "prize4_index": {
+          "name": "prize4_index",
+          "columns": [
+            {
+              "expression": "\"prize4\" jsonb_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "prize5_index": {
+          "name": "prize5_index",
+          "columns": [
+            {
+              "expression": "\"prize5\" jsonb_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "last2_digi_idx": {
+          "name": "last2_digi_idx",
+          "columns": [
+            {
+              "expression": "last2Digi",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "first3_digi_index": {
+          "name": "first3_digi_index",
+          "columns": [
+            {
+              "expression": "\"first3Digi\" jsonb_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        },
+        "last3_digi_index": {
+          "name": "last3_digi_index",
+          "columns": [
+            {
+              "expression": "\"last3Digi\" jsonb_ops",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gin",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
