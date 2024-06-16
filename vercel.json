@@ -10,7 +10,7 @@
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "apps/backend/src/main.ts",
+			"dest": "apps/backend/dist/app/main.js",
 			"methods": ["GET", "POST", "PUT", "DELETE"]
 		}
 	]
