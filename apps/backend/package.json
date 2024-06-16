@@ -12,7 +12,7 @@
 		"migration:gen": "drizzle-kit generate",
 		"migration:apply": "drizzle-kit migrate",
 		"migration:drop": "drizzle-kit drop",
-		"build:app": "nest build",
+		"build": "nest build",
 		"build:migration": "nest build migration",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
 		"start": "nest start",
