@@ -6,4 +6,6 @@ async function bootstrap() {
 	await app.listen(8080)
 }
 
+export default bootstrap
+
 bootstrap()
