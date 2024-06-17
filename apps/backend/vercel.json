@@ -4,5 +4,11 @@
 	"devCommand": "turbo run dev",
 	"installCommand": "pnpm install",
 	"buildCommand": "turbo run build --filter=backend",
-	"outputDirectory": "./api"
+	"outputDirectory": "./api",
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "/api/main"
+		}
+	]
 }
