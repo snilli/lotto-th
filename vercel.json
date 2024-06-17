@@ -1,4 +1,8 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"framework": null
+	"framework": null,
+	"devCommand": "turbo run dev",
+	"installCommand": "pnpm install",
+	"buildCommand": "turbo run build --filter=backend",
+	"outputDirectory": "./api"
 }
