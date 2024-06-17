@@ -8,6 +8,9 @@
 	"bin": {
 		"crun": "dist/cli/main-cli.js"
 	},
+	"engines": {
+		"node": "20.x"
+	},
 	"scripts": {
 		"migration:gen": "drizzle-kit generate",
 		"migration:apply": "drizzle-kit migrate",
