@@ -4,6 +4,7 @@
     "node_modules",
     "test",
     "dist",
+    "api",
     "{src,apps,libs,test}/**/*.spec.ts"
   ]
 }

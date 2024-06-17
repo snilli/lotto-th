@@ -21,7 +21,7 @@
 		"dev": "nest start --watch",
 		"start:migrate": "node dist/cli/main-cli.js migrate --dir $(pwd)/drizzle",
 		"start:debug": "nest start --debug --watch",
-		"start:prod": "node dist/main",
+		"start:prod": "node api/main",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 		"linta": "eslint \"{src,apps,libs,test}/**/*.spec.ts\" --fix",
 		"test": "vitest run",
@@ -29,8 +29,8 @@
 		"test:cov": "vitest run --coverage",
 		"test:debug": "vitest --inspect-brk --inspect --logHeapUsage --poolOptions.threads.singleThread",
 		"test:e2e": "vitest run --config ./test/vitest.config.e2e.ts",
-		"clean": "rm -rf ./dist && rm -rf .turbo",
-		"clean-all": "rm -rf ./dist && rm -rf .turbo && rm -rf node_modules"
+		"clean": "rm -rf ./api && rm -rf .turbo",
+		"clean-all": "rm -rf ./api && rm -rf .turbo && rm -rf node_modules"
 	},
 	"dependencies": {
 		"@nestjs/axios": "^3.0.2",
