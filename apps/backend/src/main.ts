@@ -9,3 +9,7 @@ async function bootstrap() {
 export default bootstrap
 
 bootstrap()
+
+export const config = {
+	runtime: 'nodejs',
+}
