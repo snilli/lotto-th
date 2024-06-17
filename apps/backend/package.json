@@ -5,12 +5,11 @@
 	"author": "",
 	"private": true,
 	"license": "UNLICENSED",
-	"bin": {
-		"crun": "dist/cli/main-cli.js"
-	},
+	"packageManager": "pnpm@9.3.0",
 	"engines": {
 		"node": "20.x"
 	},
+	"type": "module",
 	"scripts": {
 		"migration:gen": "drizzle-kit generate",
 		"migration:apply": "drizzle-kit migrate",
