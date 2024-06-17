@@ -14,7 +14,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.4.1",
+    "@nextui-org/react": "^2.4.2",
     "@snilli/ui": "workspace:*",
     "axios": "^1.7.2",
     "axios-cache-interceptor": "^1.5.3",
