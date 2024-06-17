@@ -1,7 +1,7 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"functions": {
-		"api/main.js": {
+		"dist/api/main.js": {
 			"memory": 1024
 		}
 	}
