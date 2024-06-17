@@ -9,6 +9,7 @@
 	"engines": {
 		"node": "20.x"
 	},
+	"type": "commonjs",
 	"scripts": {
 		"migration:gen": "drizzle-kit generate",
 		"migration:apply": "drizzle-kit migrate",
