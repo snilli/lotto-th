@@ -10,4 +10,5 @@ bootstrap()
 
 export const config = {
 	runtime: 'nodejs',
+	region: ['sin1'],
 }
