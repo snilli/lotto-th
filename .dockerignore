@@ -1,0 +1,32 @@
+# Common
+README.md
+CHANGELOG.md
+docker-compose.yml
+Dockerfile
+.DS_Store
+
+.DS_Store
+build/**
+dist/**
+.next/**
+.turbo
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# next.js
+.next/
+out/
+build
+
+# other
+dist/
+
+# misc
+.DS_Store
+*.pem

@@ -1,0 +1,10 @@
+name: lotto-th
+runtime: nodejs
+description: A minimal AWS TypeScript Pulumi program
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-typescript
+  aws:profile: snilli
+  aws:region: ap-southeast-1
+  

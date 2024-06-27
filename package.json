@@ -3,6 +3,7 @@
   "license": "MIT",
   "private": true,
   "name": "lotto-app",
+  "module": "./out/main.js",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -11,6 +12,7 @@
     "node": "20.x"
   },
   "scripts": {
+    "update:dep": "pnpm i --lockfile-only",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
@@ -19,10 +21,17 @@
     "clean-all": "turbo run clean-all"
   },
   "devDependencies": {
+    "@pulumi/aws": "^6.0.0",
+    "@pulumi/awsx": "^2.0.2",
+    "@pulumi/github": "^6.2.2",
+    "@pulumi/pulumi": "^3.113.0",
     "eslint": "^8.57.0",
     "eslint-config-turbo": "^2.0.4",
     "eslint-plugin-turbo": "^2.0.4",
     "turbo": "^2.0.4"
   },
-  "packageManager": "pnpm@9.3.0"
+  "packageManager": "pnpm@9.3.0",
+  "dependencies": {
+    "@nestjs/platform-express": "^10.3.9"
+  }
 }
