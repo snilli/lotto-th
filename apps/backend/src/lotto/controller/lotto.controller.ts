@@ -3,7 +3,9 @@ import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service
 import { Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common'
 import { LottoService } from '../service/lotto.service'
 
-@Controller('lotto')
+@Controller({
+	path: 'lotto',
+})
 export class LottoController {
 	constructor(
 		private readonly lottoClientService: LottoClientService,

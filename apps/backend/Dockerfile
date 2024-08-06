@@ -1,5 +1,5 @@
-FROM node:20-alpine AS node
-WORKDIR /app
+FROM public.ecr.aws/lambda/nodejs:20-arm64 AS node
+WORKDIR ${LAMBDA_TASK_ROOT}
 
 FROM node AS base
 ENV PNPM_HOME /pnpm
@@ -13,11 +13,11 @@ COPY . .
 RUN turbo prune --scope=lotto-api --docker
 
 FROM base AS installer
-RUN apk add --update --no-cache make g++ python3 && ln -sf python3 /usr/bin/python
+RUN dnf install -y make g++ python3
 COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=builder /app/out/full/ .
+COPY --from=builder ${LAMBDA_TASK_ROOT}/out/json/ .
+COPY --from=builder ${LAMBDA_TASK_ROOT}/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder ${LAMBDA_TASK_ROOT}/out/full/ .
 RUN pnpm install --frozen-lockfile
 RUN turbo run build --filter=lotto-api
 RUN pnpm prune --prod
@@ -25,18 +25,13 @@ RUN pnpm install --prod --frozen-lockfile
 
 FROM node AS runner
 ENV NODE_ENV=production
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nest
-USER nest
 
-COPY --from=installer --chown=nest:nodejs /app/apps/backend/dist ./apps/backend/dist
-COPY --from=installer --chown=nest:nodejs /app/apps/backend/node_modules ./apps/backend/node_modules
-COPY --from=installer --chown=nest:nodejs /app/apps/backend/package.json ./apps/backend/package.json
+COPY --from=installer ${LAMBDA_TASK_ROOT}/apps/backend/dist ./apps/backend/dist
+COPY --from=installer ${LAMBDA_TASK_ROOT}/apps/backend/node_modules ./apps/backend/node_modules
+COPY --from=installer ${LAMBDA_TASK_ROOT}/apps/backend/package.json ./apps/backend/package.json
 
-COPY --from=installer --chown=nest:nodejs /app/package.json ./package.json
-COPY --from=installer --chown=nest:nodejs /app/node_modules ./node_modules
-COPY --from=installer --chown=nest:nodejs /app/turbo.json ./turbo.json
+COPY --from=installer ${LAMBDA_TASK_ROOT}/package.json ./package.json
+COPY --from=installer ${LAMBDA_TASK_ROOT}/node_modules ./node_modules
+COPY --from=installer ${LAMBDA_TASK_ROOT}/turbo.json ./turbo.json
 
-EXPOSE 3000
-
-CMD ["node", "apps/backend/dist/main.js"]
+CMD ["apps/backend/dist/main.handler"]
