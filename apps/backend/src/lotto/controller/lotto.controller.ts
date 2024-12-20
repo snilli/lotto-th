@@ -1,8 +1,10 @@
 // import { Controller, Get, Inject, Req } from '@nestjs/common'
+import { createZodDto, ZodValidationPipe } from '@anatine/zod-nestjs'
 import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service'
-import { Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common'
+import { Controller, Get, Param, Post, Query } from '@nestjs/common'
+import { ApiCreatedResponse } from '@nestjs/swagger'
+import { CreateLotto } from '../dto/create-lotto.dto'
 import { LottoService } from '../service/lotto.service'
-
 @Controller('lotto')
 export class LottoController {
 	constructor(
@@ -12,7 +14,10 @@ export class LottoController {
 	) {}
 
 	@Get('/pages')
-	async getAll(@Query('page', new ParseIntPipe({ optional: true })) page: number) {
+	@ApiCreatedResponse({
+		type: createZodDto(CreateLotto),
+	})
+	async getAll(@Query('page', new ZodValidationPipe({})) page: number) {
 		return await this.lottoClientService.getAllWithPagination(Number(page ?? 1))
 	}
 
