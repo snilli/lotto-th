@@ -2,8 +2,8 @@ FROM public.ecr.aws/lambda/nodejs:20-arm64 AS node
 WORKDIR ${LAMBDA_TASK_ROOT}
 
 FROM node AS base
-ENV PNPM_HOME /pnpm
-ENV CI true
+ENV PNPM_HOME=/pnpm
+ENV CI=true
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 RUN pnpm add -g turbo

@@ -8,7 +8,14 @@
 		"lazy": false,
 		"noInterop": false
 	},
+	"exclude": [
+		".*\\.spec\\.ts$"
+	],
 	"jsc": {
+		"minify": {
+			"compress": true,
+			"mangle": true
+		},
 		"target": "es2022",
 		"keepClassNames": false,
 		"parser": {
@@ -25,5 +32,5 @@
 		"baseUrl": "./"
 	},
 	"isModule": true,
-	"minify": false
+	"minify": true
 }

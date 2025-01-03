@@ -18,9 +18,7 @@ export class DrizzleModule extends ConfigurableModuleClass {
 				{
 					provide: GenServiceTag(tag),
 					useFactory: async () => {
-						const drizzleService = new DrizzleService()
-						await drizzleService.init(options)
-						return drizzleService
+						return new DrizzleService(options)
 					},
 				},
 				{
@@ -45,9 +43,7 @@ export class DrizzleModule extends ConfigurableModuleClass {
 				{
 					provide: GenServiceTag(tag),
 					useFactory: async (config: DrizzleConfigOption) => {
-						const drizzleService = new DrizzleService()
-						await drizzleService.init(config)
-						return drizzleService
+						return new DrizzleService(config)
 					},
 					inject: [MODULE_OPTIONS_TOKEN],
 				},

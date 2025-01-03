@@ -4,11 +4,9 @@ import { VercelPgDatabase, drizzle } from 'drizzle-orm/vercel-postgres'
 import { DrizzleConfigOption } from './drizzle.interface'
 
 export class DrizzleService<T extends Record<string, unknown> = Record<string, unknown>> {
-	private db!: VercelPgDatabase<T>
-	init(options: DrizzleConfigOption): VercelPgDatabase<T> {
-		this.db = drizzle(sql, options?.config)
-
-		return this.db as VercelPgDatabase<T>
+	private db: VercelPgDatabase<T>
+	constructor(options: DrizzleConfigOption) {
+		this.db = drizzle(sql, options.config ?? {})
 	}
 
 	getDrizzle(): VercelPgDatabase<T> {
