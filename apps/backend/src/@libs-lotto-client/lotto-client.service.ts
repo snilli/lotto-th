@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { load } from 'cheerio'
 import { firstValueFrom } from 'rxjs'
+import { DateExtraction, WeeklyPrizeModel } from './interfaces'
 
 const monthMap = {
 	มกราคม: 1,
@@ -19,30 +20,7 @@ const monthMap = {
 	ธันวาคม: 12,
 } as const
 const dateAfterChangeFormat = new Date('2000-04-01').getTime()
-export interface WeeklyPrizeModel {
-	year: number
-	month: number
-	date: number
-	weekly: string
-	detailUrl: string
-	prizeList: {
-		prize1: string
-		prize2: string[]
-		prize3: string[]
-		prize4: string[]
-		prize5: string[]
-		last2Digi: string
-		first3Digi?: string[]
-		last3Digi: string[]
-	}
-}
 
-interface DateExtraction {
-	year: number
-	month: number
-	date: number
-	weekly: string
-}
 @Injectable()
 export class LottoClientService {
 	constructor(private readonly httpService: HttpService) {}

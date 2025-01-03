@@ -25,7 +25,8 @@ export class LottoRepo extends DrizzleMainRepo<schemaType> {
 	}
 
 	async prizeCheck(date: string, lottos: string[]) {
-		const a = await this.db
+		// WHEN ${lotto.last2Digi} = RIGHT(t.number, 2) THEN 'last2Digi'
+		const a = this.db
 			.select({
 				lotto: sql`t.number`.as<string>('lotto'),
 				result: sql`CASE
@@ -47,9 +48,9 @@ export class LottoRepo extends DrizzleMainRepo<schemaType> {
 				sql`${lotto.id} = ${date}`,
 			)
 
-		console.log(a)
+		console.log(a.toSQL())
 
-		return a
+		return await a
 	}
 
 	create(input: CreateLottoOption) {

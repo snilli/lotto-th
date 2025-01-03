@@ -1,15 +1,11 @@
 {
-	"packageManager": "pnpm@9.15.2",
-	"volta": {
-		"node": "20.18.1"
-	},
-	"name": "lotto-api",
+	"name": "backend",
 	"version": "0.0.1",
-	"description": "thailand lotto history",
-	"author": "mklx1319@gmail.com",
+	"description": "",
+	"author": "",
 	"private": true,
 	"license": "UNLICENSED",
-	"main": "dist/main.js",
+	"packageManager": "pnpm@9.3.0",
 	"engines": {
 		"node": "20.x"
 	},
@@ -21,6 +17,8 @@
 		"build": "nest build",
 		"build:bun": "bun build --external=class-transformer --external=class-validator --external=@nestjs/microservices --external=@nestjs/websockets --target=bun --minify ./apps/backend/dist/main.js --outdir=apps/backend/dist --format esm ./apps/backend/src/main.ts",
 		"build:bun-bin": "bun build --compile --external=class-transformer --external=class-validator --external=@nestjs/microservices --external=@nestjs/websockets --target=bun-linux-arm64 --minify ./apps/backend/src/main.ts --outfile=apps/backend/dist/main",
+		"migration:fetch": "drizzle-kit generate",
+		"a": "drizzle-kit pull",
 		"build:migration": "nest build migration",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
 		"start": "nest start",

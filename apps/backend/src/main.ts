@@ -1,3 +1,4 @@
+import { patchNestjsSwagger, ZodValidationPipe } from '@anatine/zod-nestjs'
 import serverlessExpress from '@codegenie/serverless-express'
 import { VersioningType } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
@@ -7,6 +8,7 @@ import { Callback, Context, Handler } from 'aws-lambda'
 import compression from 'compression'
 import express from 'express'
 import { AppModule } from './app.module'
+import { TransformInterceptor } from './transform.interceptor'
 let cachedServer: Handler
 
 async function bootstrap() {
@@ -18,17 +20,20 @@ async function bootstrap() {
 			type: VersioningType.URI,
 			defaultVersion: '1',
 		})
+		app.useGlobalPipes(new ZodValidationPipe())
+		app.useGlobalInterceptors(new TransformInterceptor())
 		app.use(compression())
 
 		if (process.env.NODE_ENV !== 'production') {
 			const options = new DocumentBuilder()
-				.setTitle('Cats example')
-				.setDescription('The cats API description')
+				.setTitle('lotto-th')
+				.setDescription('Api for serve lotto in Thailand from pass to now')
 				.setVersion('1.0')
-				.addTag('cats')
+				.addTag('lotto')
 				.build()
 
 			const catDocument = SwaggerModule.createDocument(app, options)
+			patchNestjsSwagger()
 			SwaggerModule.setup('api', app, catDocument)
 			await app.listen(8080)
 		}
