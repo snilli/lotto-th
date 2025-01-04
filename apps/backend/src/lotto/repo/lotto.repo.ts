@@ -2,6 +2,8 @@ import { InjectDbTag } from '@app/@libs-drizzle/drizzle.decorator'
 import { DrizzleMainRepo } from '@app/@libs-drizzle/drizzle.repo'
 import { schemaType } from '@app/schema'
 import { Injectable } from '@nestjs/common'
+import { Static } from '@sinclair/typebox'
+import { Value } from '@sinclair/typebox/value'
 import { sql } from 'drizzle-orm'
 import { VercelPgDatabase } from 'drizzle-orm/vercel-postgres'
 import { CreateLotto, CreateLottoOption } from '../dto/create-lotto.dto'
@@ -53,14 +55,18 @@ export class LottoRepo extends DrizzleMainRepo<schemaType> {
 		return await a
 	}
 
-	create(input: CreateLottoOption) {
-		const data = CreateLotto.parse(input)
-
-		return this.db.insert(lotto).values(data).onConflictDoUpdate({ target: lotto.id, set: data }).returning()
+	create(input: CreateLottoOption): Static<typeof CreateLotto> {
+		const data = Value.Parse(CreateLotto, input)
+		return this.db
+			.insert(lotto)
+			.values(data)
+			.onConflictDoUpdate({ target: lotto.id, set: data })
+			.returning() as unknown as Static<typeof CreateLotto>
 	}
 
 	async batchCreate(input: CreateLottoOption[]) {
-		const data = input.map((i) => CreateLotto.parse(i))
+		const data = input.map((i) => Value.Parse(CreateLotto, i))
+
 		await this.db.insert(lotto).values(data).onConflictDoNothing().returning()
 		// await this.db.transaction(async (tx) => {
 		// 	for (const d of data) {

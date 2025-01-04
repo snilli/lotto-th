@@ -10,6 +10,10 @@
 	"engines": {
 		"node": "20.x"
 	},
+	"packageManager": "pnpm@9.15.2",
+	"volta": {
+		"node": "20.18.1"
+	},
 	"scripts": {
 		"update:dep": "pnpm i --lockfile-only",
 		"build": "turbo run build",
@@ -29,6 +33,5 @@
 		"eslint-config-turbo": "^2.3.3",
 		"eslint-plugin-turbo": "^2.3.3",
 		"turbo": "^2.3.3"
-	},
-	"packageManager": "pnpm@9.3.0"
+	}
 }

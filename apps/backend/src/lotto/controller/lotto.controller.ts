@@ -1,8 +1,8 @@
 // import { Controller, Get, Inject, Req } from '@nestjs/common'
-import { createZodDto, ZodValidationPipe } from '@anatine/zod-nestjs'
 import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service'
-import { Controller, Get, Param, Post, Query } from '@nestjs/common'
-import { ApiCreatedResponse } from '@nestjs/swagger'
+import { Controller, Get, Post } from '@nestjs/common'
+import { Type } from '@sinclair/typebox'
+import { Validate } from 'nestjs-typebox'
 import { CreateLotto } from '../dto/create-lotto.dto'
 import { LottoService } from '../service/lotto.service'
 @Controller('lotto')
@@ -14,14 +14,24 @@ export class LottoController {
 	) {}
 
 	@Get('/pages')
-	@ApiCreatedResponse({
-		type: createZodDto(CreateLotto),
+	@Validate({
+		request: [
+			{
+				name: 'page',
+				type: 'query',
+				schema: Type.Number(),
+				coerceTypes: true,
+			},
+		],
 	})
-	async getAll(@Query('page', new ZodValidationPipe({})) page: number) {
+	async getAll(page: number) {
 		return await this.lottoClientService.getAllWithPagination(Number(page ?? 1))
 	}
 
 	@Get('/current')
+	@Validate({
+		response: CreateLotto,
+	})
 	async getCurrent() {
 		const { prizeList, ...lotto } = await this.lottoClientService.getCurrent()
 		return await this.lottaService.create({
@@ -56,7 +66,17 @@ export class LottoController {
 	// 	return await this.lottaService.create(res)
 	// }
 	@Post('/a/:page')
-	async a(@Param('page') page: number) {
+	@Validate({
+		request: [
+			{
+				name: 'page',
+				type: 'param',
+				schema: Type.Number(),
+				coerceTypes: true,
+			},
+		],
+	})
+	async a(page: number) {
 		const a = await this.lottoClientService.getAllWithPagination(page)
 		// await this.lottaService.batchCreate(
 		// 	a.data.map(({ prizeList, ...lotto }) => ({

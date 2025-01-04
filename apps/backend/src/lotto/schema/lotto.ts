@@ -22,22 +22,20 @@ export const lotto = pgTable(
 			.notNull()
 			.$onUpdate(() => new Date()),
 	},
-	(lotto) => {
-		return {
-			idIdx: index('id_idx').on(sql`(${lotto.id}::date)`),
-			yearIdx: index('year_idx').on(lotto.year),
-			monthIdx: index('month_idx').on(lotto.month),
-			dateIdx: index('date_idx').on(lotto.date),
-			prize1Idx: index('prize1_idx').on(lotto.prize1),
-			prize2Idx: index('prize2_index').using('gin', sql`${lotto.prize2} jsonb_ops`),
-			prize3Idx: index('prize3_index').using('gin', sql`${lotto.prize3} jsonb_ops`),
-			prize4Idx: index('prize4_index').using('gin', sql`${lotto.prize4} jsonb_ops`),
-			prize5Idx: index('prize5_index').using('gin', sql`${lotto.prize5} jsonb_ops`),
-			last2DigiIdx: index('last2_digi_idx').on(lotto.last2Digi),
-			first3DigiIdx: index('first3_digi_index').using('gin', sql`${lotto.first3Digi} jsonb_ops`),
-			last3DigiIdx: index('last3_digi_index').using('gin', sql`${lotto.last3Digi} jsonb_ops`),
-		}
-	},
+	(lotto) => [
+		index('id_idx').on(sql`(${lotto.id}::date)`),
+		index('year_idx').on(lotto.year),
+		index('month_idx').on(lotto.month),
+		index('date_idx').on(lotto.date),
+		index('prize1_idx').on(lotto.prize1),
+		index('prize2_index').using('gin', sql`${lotto.prize2} jsonb_ops`),
+		index('prize3_index').using('gin', sql`${lotto.prize3} jsonb_ops`),
+		index('prize4_index').using('gin', sql`${lotto.prize4} jsonb_ops`),
+		index('prize5_index').using('gin', sql`${lotto.prize5} jsonb_ops`),
+		index('last2_digi_idx').on(lotto.last2Digi),
+		index('first3_digi_index').using('gin', sql`${lotto.first3Digi} jsonb_ops`),
+		index('last3_digi_index').using('gin', sql`${lotto.last3Digi} jsonb_ops`),
+	],
 )
 
 // query multiple lotto check

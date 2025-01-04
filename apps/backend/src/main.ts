@@ -1,4 +1,3 @@
-import { patchNestjsSwagger, ZodValidationPipe } from '@anatine/zod-nestjs'
 import serverlessExpress from '@codegenie/serverless-express'
 import { VersioningType } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
@@ -7,9 +6,15 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { Callback, Context, Handler } from 'aws-lambda'
 import compression from 'compression'
 import express from 'express'
+import { configureNestJsTypebox } from 'nestjs-typebox'
 import { AppModule } from './app.module'
 import { TransformInterceptor } from './transform.interceptor'
 let cachedServer: Handler
+
+configureNestJsTypebox({
+	patchSwagger: true,
+	setFormats: true,
+})
 
 async function bootstrap() {
 	if (!cachedServer) {
@@ -20,7 +25,6 @@ async function bootstrap() {
 			type: VersioningType.URI,
 			defaultVersion: '1',
 		})
-		app.useGlobalPipes(new ZodValidationPipe())
 		app.useGlobalInterceptors(new TransformInterceptor())
 		app.use(compression())
 
@@ -33,7 +37,6 @@ async function bootstrap() {
 				.build()
 
 			const catDocument = SwaggerModule.createDocument(app, options)
-			patchNestjsSwagger()
 			SwaggerModule.setup('api', app, catDocument)
 			await app.listen(8080)
 		}
