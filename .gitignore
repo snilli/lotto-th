@@ -37,4 +37,5 @@ yarn-error.log*
 
 # Turborepo
 .turbo
+.nx
 .env*.local

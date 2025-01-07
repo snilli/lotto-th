@@ -30,8 +30,8 @@ export class LottoRepo extends DrizzleMainRepo<schemaType> {
 		// WHEN ${lotto.last2Digi} = RIGHT(t.number, 2) THEN 'last2Digi'
 		const a = this.db
 			.select({
-				lotto: sql`t.number`.as<string>('lotto'),
-				result: sql`CASE
+				lotto: sql<string>`t.number`.as('lotto'),
+				result: sql<string>`CASE
 					WHEN ${lotto.prize1} = t.number THEN 'prize1'
 					WHEN ${lotto.prize2} @> jsonb_build_array(t.number) THEN 'prize2'
 					WHEN ${lotto.prize3} @> jsonb_build_array(t.number) THEN 'prize3'
@@ -42,7 +42,7 @@ export class LottoRepo extends DrizzleMainRepo<schemaType> {
 					WHEN ${lotto.last3Digi} @> jsonb_build_array(RIGHT(t.number, 3)) THEN 'last3Digi'
 					ELSE 'No prize'
 				END
-				`.as<string>('result'),
+				`.as('result'),
 			})
 			.from(lotto)
 			.innerJoin(
