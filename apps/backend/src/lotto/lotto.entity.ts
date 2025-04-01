@@ -40,7 +40,7 @@ export class LottoEntity {
 	}
 
 	scanPrize(number: string): prizeType | undefined {
-		const prizeMap: Map<string, prizeType> = new Map()
+		const prizeMap = new Map<string, prizeType>()
 		prizeMap.set(this.state!.prizeList.prize1, 'prize1')
 		prizeMap.set(this.state!.prizeList.last2Digi, 'last2Digi')
 		this.setPrizeMap(prizeMap, this.adjacentNumber(), 'adjacentNumber')

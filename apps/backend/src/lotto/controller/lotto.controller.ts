@@ -1,36 +1,39 @@
-// import { Controller, Get, Inject, Req } from '@nestjs/common'
-import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service'
+import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service.js'
 import { Controller, Get, Post } from '@nestjs/common'
 import { Type } from '@sinclair/typebox'
-import { Validate } from 'nestjs-typebox'
-import { CreateLotto } from '../dto/create-lotto.dto'
-import { LottoService } from '../service/lotto.service'
+import { Validate } from 'nestjs-custom-typebox'
+import { CreateLotto } from '../dto/create-lotto.dto.js'
+import { PrizeCheck } from '../dto/prize-check.dto.js'
+import { LottoService } from '../service/lotto.service.js'
+
 @Controller('lotto')
 export class LottoController {
 	constructor(
 		private readonly lottoClientService: LottoClientService,
 		private readonly lottaService: LottoService,
-		// @InjectRepository(LottoEntity) private readonly lottoRepo: BaseFirestoreRepository<LottoEntity>,
 	) {}
 
 	@Get('/pages')
-	@Validate({
-		request: [
-			{
-				name: 'page',
-				type: 'query',
-				schema: Type.Number(),
-				coerceTypes: true,
-			},
-		],
-	})
-	async getAll(page: number) {
-		return await this.lottoClientService.getAllWithPagination(Number(page ?? 1))
+	async getAll() {
+		return await this.lottoClientService.getAll()
 	}
 
 	@Get('/current')
 	@Validate({
-		response: CreateLotto,
+		default: {
+			schema: Type.Array(CreateLotto),
+			name: '1232',
+		},
+		responses: [
+			{
+				httpMessage: 'NOT_FOUND',
+				name: 'NOT_FOUND',
+			},
+			{
+				httpMessage: 'SERVICE_UNAVAILABLE',
+				name: 'SERVICE_UNAVAILABLE',
+			},
+		],
 	})
 	async getCurrent() {
 		const { prizeList, ...lotto } = await this.lottoClientService.getCurrent()
@@ -44,56 +47,61 @@ export class LottoController {
 			prize3: prizeList.prize3,
 			prize4: prizeList.prize4,
 			prize5: prizeList.prize5,
-			last2Digi: prizeList.last2Digi,
-			last3Digi: prizeList.last3Digi,
-			first3Digi: prizeList.first3Digi,
+			last2Digit: prizeList.last2Digit,
+			last3Digit: prizeList.last3Digit,
+			first3Digit: prizeList.first3Digit,
 		})
 	}
 
-	@Get('/current-check')
-	async getCurrentCheck() {
-		return await this.lottaService.prizeCheck('2024-06-16', ['016777', '606426', '123431'])
+	@Post('/check/:date')
+	@Validate({
+		request: [
+			{
+				type: 'param',
+				schema: Type.String(),
+				name: 'date',
+				required: true,
+			},
+			{
+				type: 'body',
+				schema: PrizeCheck,
+				required: true,
+			},
+		],
+	})
+	async prizeCheck(date: string, payload: PrizeCheck) {
+		return await this.lottaService.prizeCheck(date, payload)
 	}
-	// @Get('/tranfer')
-	// async getTranfer() {
-	// 	const res = await this.lottoClientService.getCurrent()
-	// 	return await this.lottaService.create(res)
-	// }
 
-	// @Post('/migrate')
-	// async createMigrate() {
-	// 	const res = await this.lottoClientService.getCurrent()
-	// 	return await this.lottaService.create(res)
-	// }
 	@Post('/a/:page')
 	@Validate({
 		request: [
 			{
-				name: 'page',
 				type: 'param',
 				schema: Type.Number(),
-				coerceTypes: true,
+				required: true,
+				name: 'page',
 			},
 		],
 	})
 	async a(page: number) {
 		const a = await this.lottoClientService.getAllWithPagination(page)
-		// await this.lottaService.batchCreate(
-		// 	a.data.map(({ prizeList, ...lotto }) => ({
-		// 		date: lotto.date,
-		// 		id: lotto.weekly,
-		// 		year: lotto.year,
-		// 		month: lotto.month,
-		// 		prize1: prizeList.prize1,
-		// 		prize2: prizeList.prize2,
-		// 		prize3: prizeList.prize3,
-		// 		prize4: prizeList.prize4,
-		// 		prize5: prizeList.prize5,
-		// 		last2Digi: prizeList.last2Digi,
-		// 		last3Digi: prizeList.last3Digi,
-		// 		first3Digi: prizeList.first3Digi,
-		// 	})),
-		// )
+		await this.lottaService.batchCreate(
+			a.data.map(({ prizeList, ...lotto }) => ({
+				date: lotto.date,
+				id: lotto.weekly,
+				year: lotto.year,
+				month: lotto.month,
+				prize1: prizeList.prize1,
+				prize2: prizeList.prize2,
+				prize3: prizeList.prize3,
+				prize4: prizeList.prize4,
+				prize5: prizeList.prize5,
+				last2Digit: prizeList.last2Digit,
+				last3Digit: prizeList.last3Digit,
+				first3Digit: prizeList.first3Digit,
+			})),
+		)
 		return {
 			...a,
 			count: a.data.length,
@@ -118,9 +126,9 @@ export class LottoController {
 						prize3: prizeList.prize3,
 						prize4: prizeList.prize4,
 						prize5: prizeList.prize5,
-						last2Digi: prizeList.last2Digi,
-						last3Digi: prizeList.last3Digi,
-						first3Digi: prizeList.first3Digi,
+						last2Digit: prizeList.last2Digit,
+						last3Digit: prizeList.last3Digit,
+						first3Digit: prizeList.first3Digit,
 					})),
 				),
 			)
@@ -130,12 +138,4 @@ export class LottoController {
 
 		return { created: res.reduce((acc, curr) => acc + curr.length, 0) }
 	}
-
-	// @Get('/aaa')
-	// async getA(@Query('page', new ParseIntPipe({ optional: true })) page: number) {
-	// 	// const res = await this.lottoRepo.findById('2023-10-01')
-	// 	// console.log(res.scanPrize('02'))
-
-	// 	return {}
-	// }
 }

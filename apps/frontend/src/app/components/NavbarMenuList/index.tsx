@@ -65,7 +65,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 						{...item}
 						key={item.key}
 						aria-label={item.key}
-						endContent={isCompact || hideEndContent ? null : item.endContent ?? null}
+						endContent={isCompact || hideEndContent ? null : (item.endContent ?? null)}
 						startContent={
 							isCompact ? null : item.icon ? (
 								<Icon
@@ -77,7 +77,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 									width={24}
 								/>
 							) : (
-								item.startContent ?? null
+								(item.startContent ?? null)
 							)
 						}
 						textValue={item.title}
@@ -96,7 +96,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 											width={24}
 										/>
 									) : (
-										item.startContent ?? null
+										(item.startContent ?? null)
 									)}
 								</div>
 							</Tooltip>
@@ -131,7 +131,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 							),
 						}}
 						aria-label={item.key}
-						endContent={isCompact || isNestType || hideEndContent ? null : item.endContent ?? null}
+						endContent={isCompact || isNestType || hideEndContent ? null : (item.endContent ?? null)}
 						startContent={
 							isCompact || isNestType ? null : item.icon ? (
 								<Icon
@@ -143,7 +143,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 									width={24}
 								/>
 							) : (
-								item.startContent ?? null
+								(item.startContent ?? null)
 							)
 						}
 						title={isCompact || isNestType ? null : item.title}
@@ -161,7 +161,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 											width={24}
 										/>
 									) : (
-										item.startContent ?? null
+										(item.startContent ?? null)
 									)}
 								</div>
 							</Tooltip>
@@ -191,7 +191,7 @@ const NavbarMenuList = forwardRef<HTMLElement, NavbarMenuListProps>(
 												</span>
 											</div>
 										) : (
-											item.startContent ?? null
+											(item.startContent ?? null)
 										)
 									}
 								>

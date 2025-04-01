@@ -1,4 +1,4 @@
-import * as lottoSchema from './lotto/schema'
+import * as lottoSchema from './lotto/schema/index.js'
 
 export const schema = { ...lottoSchema }
 

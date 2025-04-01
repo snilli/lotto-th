@@ -1,19 +1,29 @@
+import { OnModuleInit } from '@nestjs/common'
 import { sql } from '@vercel/postgres'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
 import { VercelPgDatabase, drizzle } from 'drizzle-orm/vercel-postgres'
-import { DrizzleConfigOption } from './drizzle.interface'
+import { DrizzleConfigOption } from './drizzle.interface.js'
 
-export class DrizzleService<T extends Record<string, unknown> = Record<string, unknown>> {
-	private db: VercelPgDatabase<T>
+type DrizzleFn<T extends Record<string, unknown>> = typeof drizzle<T>
+const Drizzle = drizzle as unknown as new <T extends Record<string, unknown>>(
+	...args: Parameters<DrizzleFn<T>>
+) => VercelPgDatabase<T>
+
+export class DrizzleService<T extends Record<string, unknown> = Record<string, unknown>>
+	extends Drizzle<T>
+	implements OnModuleInit
+{
 	constructor(options: DrizzleConfigOption) {
-		this.db = drizzle(sql, options.config ?? {})
+		super(sql, options.config ?? {})
 	}
 
-	getDrizzle(): VercelPgDatabase<T> {
-		return this.db as VercelPgDatabase<T>
+	async onModuleInit() {
+		await migrate(this, {
+			migrationsFolder: './drizzle',
+		})
 	}
 
 	migration(dir: string) {
-		migrate(this.db, { migrationsFolder: dir })
+		void migrate(this, { migrationsFolder: dir })
 	}
 }

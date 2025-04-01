@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "node",
-    // "module": "commonjs",
+    "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "ES6",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "./",
@@ -32,6 +30,6 @@
     },
   },
   "exclude": [
-    "main.cli.ts",
+    "src/lotto/schema/index.ts"
   ]
 }

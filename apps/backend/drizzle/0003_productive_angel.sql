@@ -1,6 +1,6 @@
 -- Custom SQL migration file, put you code below! --
-CREATE OR REPLACE FUNCTION sort_string(input TEXT)
-RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION sort_string(input text)
+RETURNS text AS $$
 BEGIN
     -- Split the input string into characters, sort them, and reassemble
     RETURN (
@@ -10,14 +10,24 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION sort_jsonb(input JSONB)
-RETURNS JSONB AS $$
+CREATE OR REPLACE FUNCTION sort_jsonb(input jsonb)
+RETURNS jsonb AS $$
 BEGIN
-    -- Transform the JSONB array by sorting characters in each element
-    RETURN to_jsonb(array_agg(
-            sort_string(element::TEXT)
-                             ))
-                    FROM jsonb_array_elements_text(input) AS element;
+    RETURN to_jsonb(
+        array_agg(
+            sort_string(element::text)
+        )
+    ) FROM jsonb_array_elements_text(input) AS element;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION sort_array(input text[]) 
+RETURNS text[] AS $$
+BEGIN
+    RETURN (
+        SELECT array_agg(sort_string(element::text))
+        FROM unnest(input) AS element
+    );
 END;
 $$ LANGUAGE plpgsql;
 
@@ -25,8 +35,8 @@ CREATE OR REPLACE FUNCTION jsonb_to_text_array(input jsonb)
 RETURNS text[] AS $$
 BEGIN
     RETURN (
-        SELECT array_agg(value::text)
-        FROM jsonb_array_elements_text(input) AS value
+        SELECT array_agg(element::text)
+        FROM jsonb_array_elements_text(input) AS element
     );
 END;
 $$ LANGUAGE plpgsql;

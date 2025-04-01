@@ -94,7 +94,6 @@ const SidebarDrawer = forwardRef<
 					radius="none"
 					scrollBehavior="inside"
 					style={{
-						// @ts-ignore
 						'--sidebar-width': `${sidebarWidth}px`,
 					}}
 					onOpenChange={onOpenChange}

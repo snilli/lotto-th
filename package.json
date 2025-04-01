@@ -1,46 +1,55 @@
 {
-	"repository": "https://github.com/snilli/lotto-th.git",
-	"license": "MIT",
-	"private": true,
-	"name": "lotto-app",
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
-	"engines": {
-		"node": "20.x"
-	},
-	"packageManager": "pnpm@9.15.2",
-	"volta": {
-		"node": "20.18.1"
-	},
-	"scripts": {
-		"update:dep": "pnpm i --lockfile-only",
-		"build": "turbo run build",
-		"dev": "turbo run dev",
-		"start": "turbo run start",
-		"lint": "turbo run lint",
-		"clean": "turbo run clean",
-		"clean-all": "turbo run clean-all"
-	},
-	"devDependencies": {
-		"@pulumi/aws": "^6.66.2",
-		"@pulumi/aws-native": "^1.20.0",
-		"@pulumi/awsx": "^2.19.0",
-		"@pulumi/github": "^6.5.0",
-		"@pulumi/pulumi": "^3.144.1",
-		"@testing-library/react": "^16.1.0",
-		"@types/node": "^20.17.11",
-		"@types/react": "^19.0.2",
-		"@vitejs/plugin-react": "^4.3.1",
-		"eslint": "^9.17.0",
-		"eslint-config-turbo": "^2.3.3",
-		"eslint-plugin-turbo": "^2.3.3",
-		"prettier": "^3.4.2",
-		"tailwindcss": "^3.4.17",
-		"turbo": "^2.3.3",
-		"typescript": "^5.7.2",
-		"vite": "^5.4.11",
-		"vitest": "^2.1.8"
-	}
+  "repository": "https://github.com/snilli/lotto-th.git",
+  "license": "MIT",
+  "private": true,
+  "name": "lotto-app",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": "20.x"
+  },
+  "packageManager": "pnpm@10.4.1",
+  "volta": {
+    "node": "20.18.1"
+  },
+  "scripts": {
+    "update:dep": "pnpm i --lockfile-only",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "clean-all": "turbo run clean-all"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.23.0",
+    "@next/eslint-plugin-next": "^15.2.4",
+    "@pulumi/aws": "^6.74.0",
+    "@pulumi/aws-native": "^1.26.0",
+    "@pulumi/awsx": "^2.21.1",
+    "@pulumi/github": "^6.7.0",
+    "@pulumi/pulumi": "^3.159.0",
+    "@testing-library/react": "^16.2.0",
+    "@types/node": "^22.13.16",
+    "@types/react": "^19.0.12",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-config-turbo": "^2.4.4",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-turbo": "^2.4.4",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4.0.17",
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.29.0",
+    "vite": "^6.2.4",
+    "vitest": "^3.1.1"
+  }
 }

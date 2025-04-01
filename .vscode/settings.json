@@ -1,5 +1,9 @@
 {
-	"eslint.workingDirectories": [{ "mode": "auto" }],
+	"eslint.workingDirectories": [
+		{
+			"mode": "auto"
+		}
+	],
 	"[json]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
@@ -46,5 +50,22 @@
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true
-	}
+	},
+	"cSpell.words": [
+		"domelementtype",
+		"domhandler",
+		"recordset",
+		"กรกฎาคม",
+		"กันยายน",
+		"กุมภาพันธ์",
+		"ตุลาคม",
+		"ธันวาคม",
+		"พฤศจิกายน",
+		"พฤษภาคม",
+		"มกราคม",
+		"มิถุนายน",
+		"มีนาคม",
+		"เมษายน",
+		"สิงหาคม"
+	]
 }

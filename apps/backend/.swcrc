@@ -2,22 +2,23 @@
 	"$schema": "https://json.schemastore.org/swcrc",
 	"sourceMaps": false,
 	"module": {
-		"type": "commonjs",
-		"strict": false,
+		"type": "es6",
+		"lazy": true,
+		"strict": true,
 		"strictMode": true,
-		"lazy": false,
-		"noInterop": false
+		"noInterop": true,
+		"resolveFully": true
 	},
 	"exclude": [
 		".*\\.spec\\.ts$"
 	],
 	"jsc": {
 		"minify": {
-			"compress": true,
-			"mangle": true
+			"compress": false,
+			"mangle": false
 		},
-		"target": "es2022",
-		"keepClassNames": false,
+		"target": "esnext",
+		"keepClassNames": true,
 		"parser": {
 			"syntax": "typescript",
 			"tsx": false,

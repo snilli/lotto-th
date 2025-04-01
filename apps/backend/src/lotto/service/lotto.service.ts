@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { CreateLottoOption } from '../dto/create-lotto.dto'
-import { LottoRepo } from '../repo/lotto.repo'
+import { CreateLotto } from '../dto/create-lotto.dto.js'
+import type { PrizeCheck, PrizeCheckLocalTypeDetail } from '../dto/prize-check.dto.js'
+import type {
+	CreateLottoInput,
+	PrizeCheckLocalInput,
+	PrizeCheckLocalKind,
+	PrizeCheckLocalType,
+} from '../repo/interfaces.js'
+import { LottoRepo } from '../repo/lotto.repo.js'
 
 @Injectable()
 export class LottoService {
@@ -10,33 +17,38 @@ export class LottoService {
 		return await this.lottoRepo.getById(id)
 	}
 
-	create(data: CreateLottoOption) {
-		return this.lottoRepo.create(data)
+	async create(data: CreateLotto) {
+		return await this.lottoRepo.create(data)
 	}
 
-	// private dtoToEntity(input: any) {
-	// 	const a = this.db.insert(this.drizzleSchemaService.getSchme('lottoTable')).values().returning()
-	// 	const lotto = new LottoEntity()
-	// 	lotto.id = input.weekly
-	// 	lotto.prizeList = input.prizeList
-	// 	lotto.year = input.year
-	// 	lotto.month = input.month
-	// 	lotto.date = input.date
-	// 	lotto.timestamp = this.timeService.parse(input.weekly)
-	// 	return lotto
-	// }
-	// async create(input: CreateLottoInput) {
-	// 	const lotto = this.dtoToEntity(input)
-	// 	await this.lottoRepo.create(lotto)
-
-	// 	return lotto
-	// }
-
-	async batchCreate(input: CreateLottoOption[]) {
-		return this.lottoRepo.batchCreate(input)
+	async batchCreate(input: CreateLottoInput[]) {
+		return await this.lottoRepo.batchCreate(input)
 	}
 
-	async prizeCheck(date: string, lottos: string[]) {
-		return this.lottoRepo.prizeCheck(date, lottos)
+	async prizeCheck(date: string, payload: PrizeCheck) {
+		if (payload.type === 'global') {
+			return await this.lottoRepo.prizeCheckGlobal(date, payload.numbers)
+		}
+
+		const input: PrizeCheckLocalInput[] = []
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { type, ...rest } = payload
+		for (const [kind, value] of Object.entries(rest) as [PrizeCheckLocalKind, PrizeCheckLocalTypeDetail][]) {
+			for (const [type, numbers] of Object.entries(value) as [PrizeCheckLocalType, string[]][]) {
+				for (const num of numbers) {
+					input.push({
+						kind,
+						type,
+						number: num,
+					})
+				}
+			}
+		}
+
+		if (!input.length) {
+			return
+		}
+
+		return await this.lottoRepo.prizeCheckLocal(date, input)
 	}
 }

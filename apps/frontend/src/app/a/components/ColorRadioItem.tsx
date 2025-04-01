@@ -25,7 +25,6 @@ const ColorRadioItem = forwardRef<HTMLInputElement, ColorRadioItemProps>(({ colo
 					)}
 					style={{
 						backgroundColor: color,
-						// @ts-ignore
 						'--tw-ring-color': isSelected || isFocusVisible ? 'hsl(var(--nextui-primary))' : 'transparent',
 					}}
 				/>

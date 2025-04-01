@@ -8,7 +8,7 @@
 		"build": "rm -fr dist/* && tsc",
 		"lint": "TIMING=1 eslint \"**/*.{ts,tsx,js,jsx}\" --fix",
 		"clean": "rm -rf .turbo",
-		"clean-all": "rm -rf .turbo && rm -rf node_modules"
+		"clean-all": "rm -rf dist && rm -rf .turbo && rm -rf node_modules"
 	},
 	"sideEffects": false,
 	"type": "module",

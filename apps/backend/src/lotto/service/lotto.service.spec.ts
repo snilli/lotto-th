@@ -1,9 +1,9 @@
-import { DrizzleModule } from '@app/@libs-drizzle/drizzle.module'
+import { DrizzleModule } from '@app/@libs-drizzle/drizzle.module.js'
 import { Test, TestingModule } from '@nestjs/testing'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { LottoRepo } from '../repo/lotto.repo'
-import { schema } from '../schema'
-import { LottoService } from './lotto.service'
+import { LottoRepo } from '../repo/lotto.repo.js'
+import { schema } from '../schema/index.js'
+import { LottoService } from './lotto.service.js'
 
 describe('LottoService', () => {
 	let service: LottoService

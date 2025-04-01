@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
+import utc from 'dayjs/plugin/utc.js'
+
 dayjs.extend(utc)
 
 export interface RangeFromTo {

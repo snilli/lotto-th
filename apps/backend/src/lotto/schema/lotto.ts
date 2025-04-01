@@ -13,9 +13,9 @@ export const lotto = pgTable(
 		prize3: jsonb('prize3').notNull().$type<string[]>(),
 		prize4: jsonb('prize4').notNull().$type<string[]>(),
 		prize5: jsonb('prize5').notNull().$type<string[]>(),
-		last2Digi: varchar('last2_digi').notNull(),
-		first3Digi: jsonb('first3_digi').$type<string[]>(),
-		last3Digi: jsonb('last3_digi').notNull().$type<string[]>(),
+		last2Digit: varchar('last2_digit').notNull(),
+		first3Digit: jsonb('first3_digit').$type<string[]>(),
+		last3Digit: jsonb('last3_digit').notNull().$type<string[]>(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
 		updatedAt: timestamp('updated_at')
 			.defaultNow()
@@ -32,25 +32,8 @@ export const lotto = pgTable(
 		index('prize3_index').using('gin', sql`${lotto.prize3} jsonb_ops`),
 		index('prize4_index').using('gin', sql`${lotto.prize4} jsonb_ops`),
 		index('prize5_index').using('gin', sql`${lotto.prize5} jsonb_ops`),
-		index('last2_digi_idx').on(lotto.last2Digi),
-		index('first3_digi_index').using('gin', sql`${lotto.first3Digi} jsonb_ops`),
-		index('last3_digi_index').using('gin', sql`${lotto.last3Digi} jsonb_ops`),
+		index('last2_digit_idx').on(lotto.last2Digit),
+		index('first3_digit_index').using('gin', sql`${lotto.first3Digit} jsonb_ops`),
+		index('last3_digit_index').using('gin', sql`${lotto.last3Digit} jsonb_ops`),
 	],
 )
-
-// query multiple lotto check
-// select
-// t.number,
-// CASE
-//     WHEN l.prize1 = t.number THEN 'prize1'
-//     WHEN l.prize2 @> jsonb_build_array(t.number) THEN 'prize2'
-//     WHEN l.prize3 @> jsonb_build_array(t.number) THEN 'prize3'
-//     WHEN l.prize4 @> jsonb_build_array(t.number) THEN 'prize4'
-//     WHEN l.prize5 @> jsonb_build_array(t.number) THEN 'prize5'
-//     WHEN l."last2Digi" = RIGHT(t.number, 2) THEN 'last2Digi'
-//     WHEN l."first3Digi" @> jsonb_build_array(LEFT(t.number, 3)) THEN 'first3Digi'
-//     WHEN l."last3Digi" @> jsonb_build_array(RIGHT(t.number, 3)) THEN 'last3Digi'
-//     ELSE 'No prize'
-// END AS prize_category
-// from lotto l
-// join unnest(ARRAY[$1]::text[]) as t(number) on l.id ='2024-06-16'

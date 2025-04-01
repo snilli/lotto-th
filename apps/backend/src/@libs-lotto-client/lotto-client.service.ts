@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
-
 import { HttpService } from '@nestjs/axios'
+import { Injectable } from '@nestjs/common'
 import { load } from 'cheerio'
+import { isTag, isText } from 'domhandler'
 import { firstValueFrom } from 'rxjs'
-import { DateExtraction, WeeklyPrizeModel } from './interfaces'
+import { DateExtraction, WeeklyPrizeModel } from './interfaces.js'
 
 const monthMap = {
 	มกราคม: 1,
@@ -19,6 +19,7 @@ const monthMap = {
 	พฤศจิกายน: 11,
 	ธันวาคม: 12,
 } as const
+
 const dateAfterChangeFormat = new Date('2000-04-01').getTime()
 
 @Injectable()
@@ -28,45 +29,41 @@ export class LottoClientService {
 	async getAll() {
 		const { data: html } = await firstValueFrom(this.httpService.get<string>(''))
 		const $ = load(html)
-		const allPage: string[] = []
+		const yearPages: Promise<string>[] = []
+
 		$('.lot-c1x').each((_, ele) => {
-			const href = $(ele).children('a')[0]['attribs']['href'] as string
-			allPage.push(href)
+			const href = $(ele).children('a')[0].attribs.href
+			yearPages.push(this.getHtml(href))
 		})
 
-		const yearPages = await Promise.all(allPage.map((path) => this.getHtml(path)))
-		const weeklyInfo = yearPages
-			.map((yearPage) => {
-				return this.getYearWeekPath(yearPage)
-			})
-			.reduce((acc, cur) => {
-				acc.push(...cur)
-				return acc
-			}, [])
-		const weeklyPages = await Promise.all(
-			weeklyInfo.map((info) => (info.detailUrl ? this.getHtml(info.detailUrl) : undefined)),
-		)
-		for (const [idx, info] of weeklyInfo.entries()) {
+		const allWeeklyPrize: WeeklyPrizeModel[] = []
+		const weeklyPagesPromises: (Promise<string> | undefined)[] = []
+
+		for (const yearPage of await Promise.all(yearPages)) {
+			for (const weeklyPrize of this.getYearWeekPath(yearPage)) {
+				allWeeklyPrize.push(weeklyPrize)
+				weeklyPagesPromises.push(weeklyPrize.detailUrl ? this.getHtml(weeklyPrize.detailUrl) : undefined)
+			}
+		}
+		const weeklyPages = await Promise.all(weeklyPagesPromises)
+
+		for (const [idx, info] of allWeeklyPrize.entries()) {
 			if (!info.detailUrl) {
 				continue
 			}
 			this.weeklyPage(info, weeklyPages[idx])
 		}
-		return weeklyInfo
+
+		return allWeeklyPrize
 	}
 
-	async getAllWithPagination(page?: number) {
-		if (!page) {
-			page = 1
-		}
-
+	async getAllWithPagination(page: number = 1) {
 		const { data: html } = await firstValueFrom(this.httpService.get<string>(''))
 		const $ = load(html)
 		const pages: string[] = []
 
 		$('.lot-c1x').each((_, ele) => {
-			const href = $(ele).children('a')[0]['attribs']['href'] as string
-			pages.push(href)
+			pages.push($(ele).children('a')[0].attribs.href)
 		})
 
 		const yearPage = await this.getHtml(pages[page - 1])
@@ -74,12 +71,14 @@ export class LottoClientService {
 		const weeklyPages = await Promise.all(
 			weeklyInfo.map((info) => (info.detailUrl ? this.getHtml(info.detailUrl) : undefined)),
 		)
+
 		for (const [idx, info] of weeklyInfo.entries()) {
 			if (!info.detailUrl) {
 				continue
 			}
 			this.weeklyPage(info, weeklyPages[idx])
 		}
+
 		return {
 			data: weeklyInfo,
 			count: weeklyInfo.length,
@@ -89,8 +88,8 @@ export class LottoClientService {
 		}
 	}
 
-	async *generatorPage(page?: number) {
-		let next: number | undefined = page ?? 1
+	async *generatorPage(page = 1) {
+		let next: number | undefined = page
 		while (next) {
 			const response = await this.getAllWithPagination(next)
 			yield response.data
@@ -103,8 +102,8 @@ export class LottoClientService {
 		const weeklyInfo: WeeklyPrizeModel = {
 			prizeList: {
 				prize1: '',
-				last2Digi: '',
-				last3Digi: [],
+				last2Digit: '',
+				last3Digit: [],
 				prize2: [],
 				prize3: [],
 				prize4: [],
@@ -142,7 +141,7 @@ export class LottoClientService {
 		}
 	}
 
-	private getYearWeekPath(html: string) {
+	private getYearWeekPath(html: string): WeeklyPrizeModel[] {
 		const $ = load(html)
 		const info: WeeklyPrizeModel[] = []
 		$('table#dl_lottery_stats_list')
@@ -151,8 +150,8 @@ export class LottoClientService {
 				const res: WeeklyPrizeModel = {
 					prizeList: {
 						prize1: '',
-						last2Digi: '',
-						last3Digi: [],
+						last2Digit: '',
+						last3Digit: [],
 						prize2: [],
 						prize3: [],
 						prize4: [],
@@ -164,7 +163,7 @@ export class LottoClientService {
 					date: 0,
 					detailUrl: '',
 				}
-				const [, tagA, , tagDiv] = ele['children']
+				const [, tagA, , tagDiv] = ele.children
 				const dateExtracted = this.extractDate(
 					$(tagA).text().replace('ตรวจสลากกินแบ่งรัฐบาล งวด ', '').split(/\s+/) as [
 						string,
@@ -177,32 +176,35 @@ export class LottoClientService {
 				res.year = dateExtracted.year
 				res.weekly = dateExtracted.weekly
 				if (res.year > 2000 || new Date(res.weekly).getTime() > dateAfterChangeFormat) {
-					res.detailUrl = tagA.type === 'tag' ? tagA['attribs']['href'] : ''
+					res.detailUrl = isTag(tagA) ? tagA.attribs.href : ''
 				}
 
 				const list = Object.values($(tagDiv).find('div.lot-dc.lotto-fxl'))
 				const prizeList = res.prizeList
-				if (list[0]['children'][0]['type'] === 'text') {
-					prizeList.prize1 = list[0]['children'][0].data
+
+				if (isText(list[0].children[0])) {
+					prizeList.prize1 = list[0].children[0].data
 				}
 
 				if (
 					(res.year > 2015 || (res.year === 2015 && res.month > 8)) &&
-					list[1]['children'][0]['type'] === 'text' &&
-					list[2]['children'][0]['type'] === 'text'
+					list[1]?.children[0]?.type &&
+					isText(list[1].children[0]) &&
+					isText(list[2].children[0])
 				) {
-					prizeList.first3Digi = list[1]['children'][0]?.data.split(/\s+/)
-					prizeList.last3Digi = list[2]['children'][0]?.data.split(/\s+/)
+					prizeList.first3Digit = list[1].children[0]?.data.split(/\s+/)
+					prizeList.last3Digit = list[2].children[0]?.data.split(/\s+/)
 				} else {
-					if (list[2]['children'][0]['type'] === 'text') {
-						prizeList.last3Digi = list[2]['children'][0]?.data.split(/\s+/)
+					if (isText(list[2].children[0])) {
+						prizeList.last3Digit = list[2].children[0]?.data.split(/\s+/)
 					}
 				}
-				if (list[3]['children'][0]['type'] === 'text') {
-					prizeList.last2Digi = list[3]['children'][0].data
+				if (isText(list[3].children[0])) {
+					prizeList.last2Digit = list[3].children[0].data
 				}
 				info.push(res)
 			})
+
 		return info
 	}
 
@@ -221,23 +223,23 @@ export class LottoClientService {
 					string,
 				],
 			)
-			model.detailUrl = $('#dd_lottery_list > option:nth-child(1)')[0]['attribs']['value']
+			model.detailUrl = $('#dd_lottery_list > option:nth-child(1)')[0].attribs.value
 			const list = Object.values($('div.lot-dc.lotto-fxl'))
 			model.date = dateExtracted.date
 			model.month = dateExtracted.month
 			model.year = dateExtracted.year
 			model.weekly = dateExtracted.weekly
-			if (list[0]['children'][0]['type'] === 'text') {
-				prizeList.prize1 = list[0]['children'][0].data
+			if (isText(list[0].children[0])) {
+				prizeList.prize1 = list[0].children[0].data
 			}
-			if (list[1]['children'][0]['type'] === 'text') {
-				prizeList.first3Digi = list[1]['children'][0].data.split(/\s+/)
+			if (isText(list[1].children[0])) {
+				prizeList.first3Digit = list[1].children[0].data.split(/\s+/)
 			}
-			if (list[2]['children'][0]['type'] === 'text') {
-				prizeList.last3Digi = list[2]['children'][0].data.split(/\s+/)
+			if (isText(list[2].children[0])) {
+				prizeList.last3Digit = list[2].children[0].data.split(/\s+/)
 			}
-			if (list[3]['children'][0]['type'] === 'text') {
-				prizeList.last2Digi = list[3]['children'][0].data
+			if (isText(list[3].children[0])) {
+				prizeList.last2Digit = list[3].children[0].data
 			}
 		}
 
@@ -249,6 +251,7 @@ export class LottoClientService {
 		prizeList.prize3 = []
 		prizeList.prize4 = []
 		prizeList.prize5 = []
+
 		$('div.lot-dc.lotto-fx.lot-c20').each((i, ele) => {
 			if (i < 5) {
 				prizeList.prize2.push($(ele).text())

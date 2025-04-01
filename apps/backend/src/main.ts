@@ -6,17 +6,17 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { Callback, Context, Handler } from 'aws-lambda'
 import compression from 'compression'
 import express from 'express'
-import { configureNestJsTypebox } from 'nestjs-typebox'
-import { AppModule } from './app.module'
-import { TransformInterceptor } from './transform.interceptor'
+import { configureNestJsTypebox } from 'nestjs-custom-typebox'
+import { AppModule } from './app.module.js'
+
 let cachedServer: Handler
 
 configureNestJsTypebox({
 	patchSwagger: true,
-	setFormats: true,
+	setFormats: false,
 })
 
-async function bootstrap() {
+async function bootstrap(): Promise<Handler> {
 	if (!cachedServer) {
 		const expressApp = express()
 		const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp))
@@ -25,7 +25,6 @@ async function bootstrap() {
 			type: VersioningType.URI,
 			defaultVersion: '1',
 		})
-		app.useGlobalInterceptors(new TransformInterceptor())
 		app.use(compression())
 
 		if (process.env.NODE_ENV !== 'production') {
@@ -33,15 +32,15 @@ async function bootstrap() {
 				.setTitle('lotto-th')
 				.setDescription('Api for serve lotto in Thailand from pass to now')
 				.setVersion('1.0')
-				.addTag('lotto')
 				.build()
 
-			const catDocument = SwaggerModule.createDocument(app, options)
-			SwaggerModule.setup('api', app, catDocument)
+			const mainApiDocument = SwaggerModule.createDocument(app, options)
+			SwaggerModule.setup('api', app, mainApiDocument)
 			await app.listen(8080)
 		}
 		await app.init()
-		cachedServer = serverlessExpress({ app: expressApp })
+
+		cachedServer = serverlessExpress.configure({ app: expressApp })
 	}
 
 	return cachedServer
@@ -49,9 +48,9 @@ async function bootstrap() {
 
 export const handler = async (event: any, context: Context, callback: Callback) => {
 	const server = await bootstrap()
-	return server(event, context, callback)
+	void server(event, context, callback)
 }
 
 if (process.env.NODE_ENV !== 'production') {
-	bootstrap()
+	void bootstrap()
 }

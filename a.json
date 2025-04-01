@@ -1,0 +1,217 @@
+{
+	"openapi": "3.0.0",
+	"paths": {
+		"/v1/lotto/pages": {
+			"get": {
+				"operationId": "LottoController_getAll_v1",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["Lotto"]
+			}
+		},
+		"/v1/lotto/current": {
+			"get": {
+				"operationId": "LottoController_getCurrent_v1",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCurrentResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCurrentNotFound"
+								}
+							}
+						}
+					},
+					"503": {
+						"description": "Service Unavailable",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCurrentServiceUnavailable"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Lotto"]
+			}
+		},
+		"/v1/lotto/current-check": {
+			"get": {
+				"operationId": "LottoController_getCurrentCheck_v1",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": ""
+					}
+				},
+				"tags": ["Lotto"]
+			}
+		},
+		"/v1/lotto/a/{page}": {
+			"post": {
+				"operationId": "LottoController_a_v1",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["Lotto"]
+			}
+		},
+		"/v1/lotto/migrates": {
+			"post": {
+				"operationId": "LottoController_createInitialize_v1",
+				"parameters": [],
+				"responses": {
+					"201": {
+						"description": ""
+					}
+				},
+				"tags": ["Lotto"]
+			}
+		}
+	},
+	"info": {
+		"title": "lotto-th",
+		"description": "Api for serve lotto in Thailand from pass to now",
+		"version": "1.0",
+		"contact": {}
+	},
+	"tags": [
+		{
+			"name": "lotto",
+			"description": "Thailand Lotto History for check and tracking"
+		}
+	],
+	"servers": [],
+	"components": {
+		"schemas": {
+			"GetCurrentResponse": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "string"
+						},
+						"year": {
+							"minimum": -2147483648,
+							"maximum": 2147483647,
+							"type": "integer"
+						},
+						"month": {
+							"minimum": -32768,
+							"maximum": 32767,
+							"type": "integer"
+						},
+						"date": {
+							"minimum": -32768,
+							"maximum": 32767,
+							"type": "integer"
+						},
+						"prize1": {
+							"type": "string"
+						},
+						"last2Digi": {
+							"type": "string"
+						},
+						"prize2": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"prize3": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"prize4": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"prize5": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"first3Digi": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"last3Digi": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
+					},
+					"required": [
+						"id",
+						"year",
+						"month",
+						"date",
+						"prize1",
+						"last2Digi",
+						"createdAt",
+						"updatedAt",
+						"prize2",
+						"prize3",
+						"prize4",
+						"prize5",
+						"first3Digi",
+						"last3Digi"
+					]
+				}
+			},
+			"GetCurrentNotFound": {
+				"type": "object",
+				"properties": {
+					"statusCode": {
+						"type": "number"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": ["statusCode", "message"]
+			},
+			"GetCurrentServiceUnavailable": {
+				"type": "object",
+				"properties": {
+					"statusCode": {
+						"type": "number"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": ["statusCode", "message"]
+			}
+		}
+	}
+}

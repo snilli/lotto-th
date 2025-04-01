@@ -10,9 +10,9 @@ export interface WeeklyPrizeModel {
 		prize3: string[]
 		prize4: string[]
 		prize5: string[]
-		last2Digi: string
-		first3Digi?: string[]
-		last3Digi: string[]
+		last2Digit: string
+		first3Digit?: string[]
+		last3Digit: string[]
 	}
 }
 

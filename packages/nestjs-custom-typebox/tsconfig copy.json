@@ -1,32 +1,28 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "node",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "target": "ESNext",
     "sourceMap": true,
-    "outDir": "./dist/cli",
-    "baseUrl": "./",
+    "outDir": "dist",
     "incremental": true,
     "skipLibCheck": true,
+    "strict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    "paths": {
-      "@app": [
-        "src"
-      ],
-      "@app/*": [
-        "src/*"
-      ],
-    },
+    "noUncheckedIndexedAccess": true,
   },
-  "exclude": ["main.ts"]
+  "include": [
+    "src/**/*.ts"
+  ]
 }

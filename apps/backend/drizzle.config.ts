@@ -4,7 +4,7 @@ config({ path: '.env.development.local' })
 
 export default defineConfig({
 	dialect: 'postgresql',
-	schema: ['./src/lotto/schema'],
+	schema: ['./dist/schema.js'],
 	out: './drizzle',
 	dbCredentials: {
 		url: process.env.POSTGRES_URL,
