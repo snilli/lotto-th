@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { Callback, Context, Handler } from 'aws-lambda'
 import compression from 'compression'
 import express from 'express'
+import { RequestListener } from 'http'
 import { configureNestJsTypebox } from 'nestjs-custom-typebox'
 import { AppModule } from './app.module.js'
 
@@ -38,9 +39,9 @@ async function bootstrap(): Promise<Handler> {
 			SwaggerModule.setup('api', app, mainApiDocument)
 			await app.listen(8080)
 		}
-		await app.init()
 
-		cachedServer = serverlessExpress.configure({ app: expressApp })
+		await app.init()
+		cachedServer = serverlessExpress.configure({ app: expressApp as RequestListener })
 	}
 
 	return cachedServer
