@@ -11,12 +11,19 @@
 				"swcrcPath": ".swcrc"
 			}
 		},
-		"typeCheck": true
+		"typeCheck": true,
+		"webpackConfigPath": "./webpack.config.cjs",
+		"webpack": true
 	},
 	"projects": {
-		"default": {
-			"type": "application",
-			"entryFile": "server"
+		"lotto-client": {
+			"type": "library",
+			"root": "libs/lotto-client",
+			"entryFile": "index",
+			"sourceRoot": "libs/lotto-client/src",
+			"compilerOptions": {
+				"tsConfigPath": "libs/lotto-client/tsconfig.lib.json"
+			}
 		},
 		"migration": {
 			"type": "application",

@@ -12,6 +12,7 @@ export default tseslint.config(
 			'**/*.mjs',
 			'**/*.d.ts',
 			'./src/lotto/schema/index.ts',
+			'webpack.config.js',
 		],
 	},
 	eslint.configs.recommended,
