@@ -44,7 +44,7 @@ export class DrizzleLottoRepository
 	async getAllById(ids: string[]) {
 		const models = await this.db.query.lotto
 			.findMany({
-				where: (fields, operators) => operators.eq('ID', ids),
+				where: (fields, operators) => operators.inArray(fields.id, ids),
 			})
 			.execute()
 

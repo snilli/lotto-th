@@ -1,4 +1,4 @@
-import { swcDefaultsFactory } from '@nestjs/cli/lib/compiler/defaults/swc-defaults'
+const swcDefaultConfig = require('@nestjs/cli/lib/compiler/defaults/swc-defaults').swcDefaultsFactory().swcOptions
 
 module.exports = {
 	module: {
@@ -8,7 +8,7 @@ module.exports = {
 				exclude: /node_modules/,
 				use: {
 					loader: 'swc-loader',
-					options: swcDefaultsFactory().swcOptions,
+					options: swcDefaultConfig,
 				},
 			},
 		],

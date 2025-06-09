@@ -18,7 +18,7 @@
 		"migration:gen": "drizzle-kit generate",
 		"migration:apply": "drizzle-kit migrate",
 		"migration:drop": "drizzle-kit drop",
-		"build": "nest build default",
+		"build": "nest build",
 		"migration:fetch": "drizzle-kit generate",
 		"a": "drizzle-kit pull",
 		"build:migration": "nest build migration",
