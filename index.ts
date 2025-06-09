@@ -6,7 +6,7 @@ import { getRefOutput } from '@pulumi/github/getRef'
 const lottoTag = {
 	name: 'lottoService',
 	type: 'api',
-	runtime: 'node.js',
+	runtime: 'node',
 }
 const development = getRefOutput({
 	owner: 'snilli',

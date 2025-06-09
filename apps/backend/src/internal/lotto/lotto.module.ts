@@ -1,9 +1,9 @@
-import { LottoClientModule } from '@app/@libs-lotto-client/lotto-client.module.js'
 import { Module } from '@nestjs/common'
-import { LottoService } from './application/service/lotto.service.js'
-import { DrizzleLottoRepository } from './infrastructure/postgres/repository/lotto.repository.js'
-import { LottoController } from './presentation/http/controller/lotto.controller.js'
-import { LottoRepository } from './domain/repository/lotto.repository.js'
+import { LottoService } from './application/service/lotto.service'
+import { LottoRepository } from './domain/repository/lotto.repository'
+import { DrizzleLottoRepository } from './infrastructure/postgres/repository/lotto.repository'
+import { LottoController } from './presentation/http/controller/lotto.controller'
+import { LottoClientModule } from '@app/lotto-client'
 
 @Module({
 	imports: [LottoClientModule],

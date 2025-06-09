@@ -1,19 +1,19 @@
-import { LottoAggregate } from '@app/internal/lotto/domain/entity/lotto.aggregate.js'
+import { LottoAggregate } from '@app/internal/lotto/domain/entity/lotto.aggregate'
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiParam } from '@nestjs/swagger'
 import { ZodSerializerDto } from 'nestjs-zod'
-import { LottoService } from '../../../application/service/lotto.service.js'
+import { LottoService } from '../../../application/service/lotto.service'
 import {
 	CheckGlobalLottoPrizeBody,
 	CheckGlobalLottoPrizeParam,
 	CheckGlobalLottoPrizeResponse,
-} from '../dto/check-global-lotto-prize.dto.js'
+} from '../dto/check-global-lotto-prize.dto'
 import {
 	CheckLocalLottoPrizeBody,
 	CheckLocalLottoPrizeParam,
 	CheckLocalLottoPrizeResponse,
-} from '../dto/check-local-lotto-prize.dto.js'
-import { LottoModel, LottoModelDTO } from '../dto/lotto.model.js'
+} from '../dto/check-local-lotto-prize.dto'
+import { LottoModel, LottoModelDTO } from '../dto/lotto.model'
 
 @Controller('lotto')
 export class LottoController {

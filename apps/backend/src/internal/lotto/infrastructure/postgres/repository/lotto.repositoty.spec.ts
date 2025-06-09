@@ -1,9 +1,9 @@
-import { DrizzleModule } from '@app/@libs-drizzle/drizzle.module.js'
+import { DrizzleModule } from '@app/@libs-drizzle/drizzle.module'
 import { ConfigModule } from '@nestjs/config'
 import { Test, TestingModule } from '@nestjs/testing'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { schema } from '../schema/index.js'
-import { DrizzleLottoRepository } from './lotto.repository.js'
+import { schema } from '../schema/index'
+import { DrizzleLottoRepository } from './lotto.repository'
 
 describe('LottoRepo', () => {
 	let repo: DrizzleLottoRepository

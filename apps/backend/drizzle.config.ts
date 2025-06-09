@@ -4,7 +4,7 @@ config({ path: '.env.development.local' })
 
 export default defineConfig({
 	dialect: 'postgresql',
-	schema: ['./dist/schema.js'],
+	schema: ['./dist/schema'],
 	out: './drizzle',
 	dbCredentials: {
 		url: process.env.POSTGRES_URL,

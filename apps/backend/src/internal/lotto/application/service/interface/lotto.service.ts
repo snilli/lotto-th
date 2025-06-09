@@ -1,7 +1,7 @@
 import {
-	CheckLocalPrizeType,
 	CheckLocalPrizeKind,
-} from '@app/internal/lotto/domain/repository/interface/lotto.repository.js'
+	CheckLocalPrizeType,
+} from '@app/internal/lotto/domain/repository/interface/lotto.repository'
 
 export interface CreateLottoServiceInput {
 	id: string

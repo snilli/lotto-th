@@ -8,11 +8,11 @@ export default tseslint.config(
 		ignores: [
 			'node_modules',
 			'**/node_modules/**',
-			'**/*.js',
+			'**/*',
 			'**/*.mjs',
 			'**/*.d.ts',
 			'./src/lotto/schema/index.ts',
-			'webpack.config.js',
+			'webpack.config',
 		],
 	},
 	eslint.configs.recommended,

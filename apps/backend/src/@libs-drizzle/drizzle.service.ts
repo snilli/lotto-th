@@ -2,7 +2,7 @@ import { OnModuleInit } from '@nestjs/common'
 import { sql } from '@vercel/postgres'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
 import { VercelPgDatabase, drizzle } from 'drizzle-orm/vercel-postgres'
-import { DrizzleConfigOption } from './drizzle.interface.js'
+import { DrizzleConfigOption } from './drizzle.interface'
 
 type DrizzleFn<T extends Record<string, unknown>> = typeof drizzle<T>
 const Drizzle = drizzle as unknown as new <T extends Record<string, unknown>>(

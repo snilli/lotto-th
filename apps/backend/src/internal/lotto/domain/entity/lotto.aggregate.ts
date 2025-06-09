@@ -1,5 +1,5 @@
-import { BaseAggregate } from '@app/internal/share/domain/base.aggregate.js'
-import { CreateLottoInput, Lotto } from './interface/lotto.aggregate.js'
+import { BaseAggregate } from '@app/internal/share/domain/base.aggregate'
+import { CreateLottoInput, Lotto } from './interface/lotto.aggregate'
 
 export class LottoAggregate implements BaseAggregate<Lotto> {
 	private readonly id: string

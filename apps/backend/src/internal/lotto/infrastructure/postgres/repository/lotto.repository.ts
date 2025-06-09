@@ -1,6 +1,6 @@
-import { InjectServiceTag } from '@app/@libs-drizzle/drizzle.decorator.js'
-import { DrizzleMainRepo } from '@app/@libs-drizzle/drizzle.repo.js'
-import { LottoAggregate } from '@app/internal/lotto/domain/entity/lotto.aggregate.js'
+import { InjectServiceTag } from '@app/@libs-drizzle/drizzle.decorator'
+import { DrizzleMainRepo } from '@app/@libs-drizzle/drizzle.repo'
+import { LottoAggregate } from '@app/internal/lotto/domain/entity/lotto.aggregate'
 import {
 	CheckGlobalPrizeResponse,
 	CheckLocalPrizeInput,
@@ -8,15 +8,15 @@ import {
 	CheckLocalPrizeResponse,
 	CheckLocalPrizeType,
 	GlobalLottoPrizeList,
-} from '@app/internal/lotto/domain/repository/interface/lotto.repository.js'
-import { LottoRepository } from '@app/internal/lotto/domain/repository/lotto.repository.js'
-import { BaseRepository } from '@app/internal/share/infrastructure/postgres/repository/base.repository.js'
-import { schemaType } from '@app/internal/share/infrastructure/postgres/schema/index.js'
+} from '@app/internal/lotto/domain/repository/interface/lotto.repository'
+import { LottoRepository } from '@app/internal/lotto/domain/repository/lotto.repository'
+import { BaseRepository } from '@app/internal/share/infrastructure/postgres/repository/base.repository'
+import { schemaType } from '@app/internal/share/infrastructure/postgres/schema/index'
 import { Injectable } from '@nestjs/common'
 import { sql } from 'drizzle-orm'
 import { VercelPgDatabase } from 'drizzle-orm/vercel-postgres'
-import { lotto } from '../schema/index.js'
-import { LottoModel } from '../schema/lotto.interface.js'
+import { lotto } from '../schema/index'
+import { LottoModel } from '../schema/lotto.interface'
 
 @Injectable()
 export class DrizzleLottoRepository

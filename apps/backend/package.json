@@ -1,7 +1,7 @@
 {
 	"packageManager": "pnpm@10.11.1",
 	"volta": {
-		"node": "20.18.1",
+		"node": "22.16.0",
 		"pnpm": "10.11.1"
 	},
 	"name": "lotto-api",
@@ -12,14 +12,13 @@
 	"license": "UNLICENSED",
 	"main": "dist/main.js",
 	"engines": {
-		"node": "20.x"
+		"node": "22.x"
 	},
-	"type": "module",
 	"scripts": {
 		"migration:gen": "drizzle-kit generate",
 		"migration:apply": "drizzle-kit migrate",
 		"migration:drop": "drizzle-kit drop",
-		"build": "nest build",
+		"build": "nest build --webpack",
 		"migration:fetch": "drizzle-kit generate",
 		"a": "drizzle-kit pull",
 		"build:migration": "nest build migration",
@@ -80,6 +79,7 @@
 		"eslint-plugin-drizzle": "^0.2.3",
 		"supertest": "^7.1.1",
 		"swc-loader": "^0.2.6",
+		"ts-loader": "^9.5.2",
 		"unplugin-swc": "^1.5.4",
 		"vite-tsconfig-paths": "^5.1.4"
 	}

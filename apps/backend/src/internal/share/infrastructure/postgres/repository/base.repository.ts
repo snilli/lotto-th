@@ -1,4 +1,4 @@
-import { BaseAggregate } from '@app/internal/share/domain/base.aggregate.js'
+import { BaseAggregate } from '@app/internal/share/domain/base.aggregate'
 
 export abstract class BaseRepository<T extends BaseAggregate, E extends Record<string, any>> {
 	abstract mapAggregateToModel(agg: T): E
