@@ -23,7 +23,7 @@ export class DrizzleService<T extends Record<string, unknown> = Record<string, u
 		})
 	}
 
-	migration(dir: string) {
-		void migrate(this, { migrationsFolder: dir })
+	async migration(dir: string) {
+		await migrate(this, { migrationsFolder: dir })
 	}
 }

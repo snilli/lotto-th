@@ -14,6 +14,10 @@
 		"typeCheck": true
 	},
 	"projects": {
+		"default": {
+			"type": "application",
+			"entryFile": "server"
+		},
 		"migration": {
 			"type": "application",
 			"compilerOptions": {

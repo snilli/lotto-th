@@ -1,216 +1,193 @@
 {
 	"openapi": "3.0.0",
 	"paths": {
-		"/v1/lotto/pages": {
-			"get": {
-				"operationId": "LottoController_getAll_v1",
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": ""
-					}
-				},
-				"tags": ["Lotto"]
-			}
-		},
 		"/v1/lotto/current": {
 			"get": {
 				"operationId": "LottoController_getCurrent_v1",
 				"parameters": [],
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "",
 						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/GetCurrentResponse"
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Not Found",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/GetCurrentNotFound"
-								}
-							}
-						}
-					},
-					"503": {
-						"description": "Service Unavailable",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/GetCurrentServiceUnavailable"
-								}
-							}
+							"application/json": { "schema": { "$ref": "#/components/schemas/LottoModelDTO" } }
 						}
 					}
 				},
 				"tags": ["Lotto"]
 			}
 		},
-		"/v1/lotto/current-check": {
-			"get": {
-				"operationId": "LottoController_getCurrentCheck_v1",
-				"parameters": [],
+		"/v1/lotto/check/global/{date}": {
+			"post": {
+				"operationId": "LottoController_checkGlobalPrize_v1",
+				"parameters": [
+					{
+						"name": "date",
+						"required": true,
+						"in": "path",
+						"description": "Lotto weekly date",
+						"schema": {
+							"format": "date",
+							"pattern": "^((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))$",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/CheckGlobalLottoPrizeBody" } }
+					}
+				},
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": { "$ref": "#/components/schemas/CheckGlobalLottoPrizeResponse" }
+								}
+							}
+						}
 					}
 				},
 				"tags": ["Lotto"]
 			}
 		},
-		"/v1/lotto/a/{page}": {
+		"/v1/lotto/check/local/{date}": {
 			"post": {
-				"operationId": "LottoController_a_v1",
-				"parameters": [],
-				"responses": {
-					"201": {
-						"description": ""
+				"operationId": "LottoController_checkLocalPrize_v1",
+				"parameters": [
+					{
+						"name": "date",
+						"required": true,
+						"in": "path",
+						"description": "Lotto weekly date",
+						"schema": {
+							"format": "date",
+							"pattern": "^((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))$",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": { "schema": { "$ref": "#/components/schemas/CheckLocalLottoPrizeBody" } }
 					}
 				},
-				"tags": ["Lotto"]
-			}
-		},
-		"/v1/lotto/migrates": {
-			"post": {
-				"operationId": "LottoController_createInitialize_v1",
-				"parameters": [],
 				"responses": {
-					"201": {
-						"description": ""
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": { "$ref": "#/components/schemas/CheckLocalLottoPrizeResponse" }
+								}
+							}
+						}
 					}
 				},
 				"tags": ["Lotto"]
 			}
 		}
 	},
-	"info": {
-		"title": "lotto-th",
-		"description": "Api for serve lotto in Thailand from pass to now",
-		"version": "1.0",
-		"contact": {}
-	},
-	"tags": [
-		{
-			"name": "lotto",
-			"description": "Thailand Lotto History for check and tracking"
-		}
-	],
+	"info": { "title": "Example API", "description": "Example API description", "version": "1.0", "contact": {} },
+	"tags": [],
 	"servers": [],
 	"components": {
 		"schemas": {
-			"GetCurrentResponse": {
-				"type": "array",
-				"items": {
-					"type": "object",
-					"properties": {
-						"id": {
-							"type": "string"
+			"LottoModelDTO": {
+				"type": "object",
+				"properties": {
+					"date": { "type": "string" },
+					"prize1": { "type": "string" },
+					"prize2": { "type": "array", "items": { "type": "string" } },
+					"prize3": { "type": "array", "items": { "type": "string" } },
+					"prize4": { "type": "array", "items": { "type": "string" } },
+					"prize5": { "type": "array", "items": { "type": "string" } },
+					"last2Digit": { "type": "string" },
+					"first3Digit": { "type": "array", "items": { "type": "string" } },
+					"last3Digit": { "type": "array", "items": { "type": "string" } }
+				},
+				"required": ["date", "prize1", "prize2", "prize3", "prize4", "prize5", "last2Digit", "last3Digit"]
+			},
+			"CheckGlobalLottoPrizeBody": {
+				"type": "object",
+				"properties": { "numbers": { "type": "array", "items": { "type": "string" } } },
+				"required": ["numbers"]
+			},
+			"CheckGlobalLottoPrizeResponse": {
+				"type": "object",
+				"properties": {
+					"number": { "type": "string" },
+					"result": {
+						"type": "string",
+						"enum": [
+							"prize1",
+							"prize2",
+							"prize3",
+							"prize4",
+							"prize5",
+							"last-2digit",
+							"first-3digit",
+							"last-3Digit",
+							"not-match"
+						]
+					}
+				},
+				"required": ["number", "result"]
+			},
+			"CheckLocalLottoPrizeBody": {
+				"type": "object",
+				"properties": {
+					"2digit-global": {
+						"type": "object",
+						"properties": {
+							"exactly": { "type": "array", "items": { "type": "string" } },
+							"ordering": { "type": "array", "items": { "type": "string" } }
 						},
-						"year": {
-							"minimum": -2147483648,
-							"maximum": 2147483647,
-							"type": "integer"
-						},
-						"month": {
-							"minimum": -32768,
-							"maximum": 32767,
-							"type": "integer"
-						},
-						"date": {
-							"minimum": -32768,
-							"maximum": 32767,
-							"type": "integer"
-						},
-						"prize1": {
-							"type": "string"
-						},
-						"last2Digi": {
-							"type": "string"
-						},
-						"prize2": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"prize3": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"prize4": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"prize5": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"first3Digi": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						"last3Digi": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						}
+						"additionalProperties": false
 					},
-					"required": [
-						"id",
-						"year",
-						"month",
-						"date",
-						"prize1",
-						"last2Digi",
-						"createdAt",
-						"updatedAt",
-						"prize2",
-						"prize3",
-						"prize4",
-						"prize5",
-						"first3Digi",
-						"last3Digi"
-					]
+					"2digit-local": {
+						"type": "object",
+						"properties": {
+							"exactly": { "type": "array", "items": { "type": "string" } },
+							"ordering": { "type": "array", "items": { "type": "string" } }
+						},
+						"additionalProperties": false
+					},
+					"3digit-global": {
+						"type": "object",
+						"properties": {
+							"exactly": { "type": "array", "items": { "type": "string" } },
+							"ordering": { "type": "array", "items": { "type": "string" } }
+						},
+						"additionalProperties": false
+					},
+					"3digit-local": {
+						"type": "object",
+						"properties": {
+							"exactly": { "type": "array", "items": { "type": "string" } },
+							"ordering": { "type": "array", "items": { "type": "string" } }
+						},
+						"additionalProperties": false
+					}
 				}
 			},
-			"GetCurrentNotFound": {
+			"CheckLocalLottoPrizeResponse": {
 				"type": "object",
 				"properties": {
-					"statusCode": {
-						"type": "number"
-					},
-					"message": {
-						"type": "string"
+					"number": { "type": "string" },
+					"isWin": { "type": "boolean" },
+					"type": { "type": "string", "enum": ["exactly", "ordering"] },
+					"kind": {
+						"type": "string",
+						"enum": ["2digit-global", "2digit-local", "3digit-global", "3digit-local"]
 					}
 				},
-				"required": ["statusCode", "message"]
-			},
-			"GetCurrentServiceUnavailable": {
-				"type": "object",
-				"properties": {
-					"statusCode": {
-						"type": "number"
-					},
-					"message": {
-						"type": "string"
-					}
-				},
-				"required": ["statusCode", "message"]
+				"required": ["number", "isWin", "type", "kind"]
 			}
 		}
 	}

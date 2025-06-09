@@ -1,9 +1,9 @@
-import { Object, String, TSchema } from '@sinclair/typebox'
+import { z } from 'zod/v4'
 
-export const CursorBase = (data: TSchema) => {
-	return Object({
-		next: String(),
-		prev: String(),
+export const CursorBase = <T extends z.ZodTypeAny>(data: T) => {
+	return z.object({
+		next: z.string(),
+		prev: z.string(),
 		data,
 	})
 }

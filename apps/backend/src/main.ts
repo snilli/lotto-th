@@ -7,15 +7,10 @@ import { Callback, Context, Handler } from 'aws-lambda'
 import compression from 'compression'
 import express from 'express'
 import { RequestListener } from 'http'
-import { configureNestJsTypebox } from 'nestjs-custom-typebox'
-import { AppModule } from './app.module.js'
+import { AppModule } from './internal/app.module.js'
+import { LottoModule } from './internal/lotto/lotto.module.js'
 
 let cachedServer: Handler
-
-configureNestJsTypebox({
-	patchSwagger: true,
-	setFormats: false,
-})
 
 async function bootstrap(): Promise<Handler> {
 	if (!cachedServer) {
@@ -29,14 +24,29 @@ async function bootstrap(): Promise<Handler> {
 		app.use(compression())
 
 		if (process.env.NODE_ENV !== 'production') {
-			const options = new DocumentBuilder()
-				.setTitle('lotto-th')
-				.setDescription('Api for serve lotto in Thailand from pass to now')
-				.setVersion('1.0')
-				.build()
+			const zodV4Document = SwaggerModule.createDocument(
+				app,
+				new DocumentBuilder()
+					.setTitle('Example API')
+					.setDescription('Example API description')
+					.setVersion('1.0')
+					.build(),
+				{
+					include: [LottoModule],
+				},
+			)
+			SwaggerModule.setup('api', app, zodV4Document, {
+				jsonDocumentUrl: 'swagger/json',
+			})
 
-			const mainApiDocument = SwaggerModule.createDocument(app, options)
-			SwaggerModule.setup('api', app, mainApiDocument)
+			// const options = new DocumentBuilder()
+			// 	.setTitle('lotto-th')
+			// 	.setDescription('Api for serve lotto in Thailand from pass to now')
+			// 	.setVersion('1.0')
+			// 	.build()
+
+			// const mainApiDocument = SwaggerModule.createDocument(app, options)
+			// SwaggerModule.setup('api', app, mainApiDocument)
 			await app.listen(8080)
 		}
 

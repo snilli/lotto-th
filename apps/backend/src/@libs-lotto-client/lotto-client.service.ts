@@ -27,11 +27,11 @@ export class LottoClientService {
 	constructor(private readonly httpService: HttpService) {}
 
 	async getAll() {
-		const { data: html } = await firstValueFrom(this.httpService.get<string>(''))
+		const { data: html } = await firstValueFrom(this.httpService.get<string>('/lottery'))
 		const $ = load(html)
 		const yearPages: Promise<string>[] = []
 
-		$('.lot-c1x').each((_, ele) => {
+		$('.lot-cy').each((_, ele) => {
 			const href = $(ele).children('a')[0].attribs.href
 			yearPages.push(this.getHtml(href))
 		})
@@ -45,10 +45,11 @@ export class LottoClientService {
 				weeklyPagesPromises.push(weeklyPrize.detailUrl ? this.getHtml(weeklyPrize.detailUrl) : undefined)
 			}
 		}
-		const weeklyPages = await Promise.all(weeklyPagesPromises)
 
+		const weeklyPages = await Promise.all(weeklyPagesPromises)
 		for (const [idx, info] of allWeeklyPrize.entries()) {
 			if (!info.detailUrl) {
+				console.log(1)
 				continue
 			}
 			this.weeklyPage(info, weeklyPages[idx])
@@ -61,8 +62,7 @@ export class LottoClientService {
 		const { data: html } = await firstValueFrom(this.httpService.get<string>(''))
 		const $ = load(html)
 		const pages: string[] = []
-
-		$('.lot-c1x').each((_, ele) => {
+		$('.lot-cy').each((_, ele) => {
 			pages.push($(ele).children('a')[0].attribs.href)
 		})
 
@@ -143,67 +143,79 @@ export class LottoClientService {
 
 	private getYearWeekPath(html: string): WeeklyPrizeModel[] {
 		const $ = load(html)
+		const titleATag = $('.content-main-fullwidth')
+			.find('a')
+			.filter(
+				(_, ele) =>
+					ele.name == 'a' &&
+					$(ele).text().length > 20 &&
+					!!ele.attributes.find((att) => att.name == 'href' && att.value.length == 31),
+			)
+			.get()
+
 		const info: WeeklyPrizeModel[] = []
-		$('table#dl_lottery_stats_list')
-			.find('td')
-			.each((_, ele) => {
-				const res: WeeklyPrizeModel = {
-					prizeList: {
-						prize1: '',
-						last2Digit: '',
-						last3Digit: [],
-						prize2: [],
-						prize3: [],
-						prize4: [],
-						prize5: [],
-					},
-					weekly: '',
-					year: 0,
-					month: 0,
-					date: 0,
-					detailUrl: '',
-				}
-				const [, tagA, , tagDiv] = ele.children
-				const dateExtracted = this.extractDate(
-					$(tagA).text().replace('ตรวจสลากกินแบ่งรัฐบาล งวด ', '').split(/\s+/) as [
-						string,
-						keyof typeof monthMap,
-						string,
-					],
-				)
-				res.date = dateExtracted.date
-				res.month = dateExtracted.month
-				res.year = dateExtracted.year
-				res.weekly = dateExtracted.weekly
-				if (res.year > 2000 || new Date(res.weekly).getTime() > dateAfterChangeFormat) {
-					res.detailUrl = isTag(tagA) ? tagA.attribs.href : ''
-				}
+		for (const ele of titleATag) {
+			const res: WeeklyPrizeModel = {
+				prizeList: {
+					prize1: '',
+					last2Digit: '',
+					last3Digit: [],
+					prize2: [],
+					prize3: [],
+					prize4: [],
+					prize5: [],
+				},
+				weekly: '',
+				year: 0,
+				month: 0,
+				date: 0,
+				detailUrl: '',
+			}
+			const dateExtracted = this.extractDate(
+				$(ele).text().replace('ตรวจสลากกินแบ่งรัฐบาล งวด ', '').split(/\s+/) as [
+					string,
+					keyof typeof monthMap,
+					string,
+				],
+			)
+			res.date = dateExtracted.date
+			res.month = dateExtracted.month
+			res.year = dateExtracted.year
+			res.weekly = dateExtracted.weekly
+			if (res.year > 2000 || new Date(res.weekly).getTime() > dateAfterChangeFormat) {
+				res.detailUrl = isTag(ele) ? ele.attribs.href : ''
+			}
 
-				const list = Object.values($(tagDiv).find('div.lot-dc.lotto-fxl'))
-				const prizeList = res.prizeList
+			const tablePrize = ele.next
+			if (!tablePrize) {
+				continue
+			}
+			const list = Object.values($(tablePrize).find('div.lot-dc.lotto-fxl'))
 
-				if (isText(list[0].children[0])) {
-					prizeList.prize1 = list[0].children[0].data
-				}
+			const prizeList = res.prizeList
 
-				if (
-					(res.year > 2015 || (res.year === 2015 && res.month > 8)) &&
-					list[1]?.children[0]?.type &&
-					isText(list[1].children[0]) &&
-					isText(list[2].children[0])
-				) {
-					prizeList.first3Digit = list[1].children[0]?.data.split(/\s+/)
+			if (isText(list[0].children[0])) {
+				prizeList.prize1 = list[0].children[0].data
+			}
+
+			if (
+				(res.year > 2015 || (res.year === 2015 && res.month > 8)) &&
+				list[1]?.children[0]?.type &&
+				isText(list[1].children[0]) &&
+				isText(list[2].children[0])
+			) {
+				prizeList.first3Digit = list[1].children[0]?.data.split(/\s+/)
+				prizeList.last3Digit = list[2].children[0]?.data.split(/\s+/)
+			} else {
+				if (isText(list[2].children[0])) {
 					prizeList.last3Digit = list[2].children[0]?.data.split(/\s+/)
-				} else {
-					if (isText(list[2].children[0])) {
-						prizeList.last3Digit = list[2].children[0]?.data.split(/\s+/)
-					}
 				}
-				if (isText(list[3].children[0])) {
-					prizeList.last2Digit = list[3].children[0].data
-				}
-				info.push(res)
-			})
+			}
+			if (isText(list[3].children[0])) {
+				prizeList.last2Digit = list[3].children[0].data
+			}
+			info.push(res)
+		}
 
 		return info
 	}
@@ -243,16 +255,7 @@ export class LottoClientService {
 			}
 		}
 
-		if (!model.detailUrl) {
-			return
-		}
-
-		prizeList.prize2 = []
-		prizeList.prize3 = []
-		prizeList.prize4 = []
-		prizeList.prize5 = []
-
-		$('div.lot-dc.lotto-fx.lot-c20').each((i, ele) => {
+		$('div.lot-dc.lotto-fx.lot-c30').each((i, ele) => {
 			if (i < 5) {
 				prizeList.prize2.push($(ele).text())
 			} else if (i < 15) {
@@ -263,5 +266,7 @@ export class LottoClientService {
 				prizeList.prize5.push($(ele).text())
 			}
 		})
+
+		return model
 	}
 }
