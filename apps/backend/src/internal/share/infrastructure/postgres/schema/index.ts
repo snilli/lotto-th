@@ -1,4 +1,4 @@
-import * as lottoSchema from '../../../../lotto/infrastructure/postgres/schema/index.js'
+import * as lottoSchema from '../../../../lotto/infrastructure/postgres/schema/index'
 
 export const schema = { ...lottoSchema }
 

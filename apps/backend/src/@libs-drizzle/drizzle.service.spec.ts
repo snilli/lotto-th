@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { pgTable, serial } from 'drizzle-orm/pg-core'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { GenServiceTag } from './drizzle.decorator.js'
-import { DrizzleModule } from './drizzle.module.js'
-import { DrizzleService } from './drizzle.service.js'
+import { GenServiceTag } from './drizzle.decorator'
+import { DrizzleModule } from './drizzle.module'
+import { DrizzleService } from './drizzle.service'
 
 const schema = {
 	users: pgTable('users', {

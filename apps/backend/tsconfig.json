@@ -19,7 +19,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    // "moduleResolution": "Node",
     "paths": {
       "@app": [
         "src"
@@ -27,7 +26,13 @@
       "@app/*": [
         "src/*"
       ],
-    },
+      "@app/lotto-client": [
+        "libs/lotto-client/src"
+      ],
+      "@app/lotto-client/*": [
+        "libs/lotto-client/src/*"
+      ]
+    }
   },
   "exclude": [
     "src/lotto/schema/index.ts"

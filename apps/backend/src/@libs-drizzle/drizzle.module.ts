@@ -1,14 +1,8 @@
-import { DrizzleService } from './drizzle.service.js'
-
 import { DynamicModule, Global, Module } from '@nestjs/common'
-import { GenServiceTag } from './drizzle.decorator.js'
-import {
-	ASYNC_OPTIONS_TYPE,
-	ConfigurableModuleClass,
-	MODULE_OPTIONS_TOKEN,
-	OPTIONS_TYPE,
-} from './drizzle.definition.js'
-import { DrizzleConfigOption } from './drizzle.interface.js'
+import { ASYNC_OPTIONS_TYPE, ConfigurableModuleClass, MODULE_OPTIONS_TOKEN, OPTIONS_TYPE } from './drizzle.definition'
+import { DrizzleConfigOption } from './drizzle.interface'
+import { GenServiceTag } from './drizzle.decorator'
+import { DrizzleService } from './drizzle.service'
 
 @Global()
 @Module({})

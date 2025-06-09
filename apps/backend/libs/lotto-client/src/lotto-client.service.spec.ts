@@ -1,17 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { TimeModule } from './time.module'
-import { TimeService } from './time.service'
+import { LottoClientService } from './lotto-client.service'
 
-describe('TimeService', () => {
-	let service: TimeService
+describe('LottoClientService', () => {
+	let service: LottoClientService
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			imports: [TimeModule],
+			providers: [LottoClientService],
 		}).compile()
 
-		service = module.get<TimeService>(TimeService)
+		service = module.get<LottoClientService>(LottoClientService)
 	})
 
 	it('should be defined', () => {

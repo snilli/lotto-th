@@ -1,9 +1,5 @@
-import { LottoAggregate } from '../entity/lotto.aggregate.js'
-import {
-	CheckGlobalPrizeResponse,
-	CheckLocalPrizeInput,
-	CheckLocalPrizeResponse,
-} from './interface/lotto.repository.js'
+import { LottoAggregate } from '../entity/lotto.aggregate'
+import { CheckGlobalPrizeResponse, CheckLocalPrizeInput, CheckLocalPrizeResponse } from './interface/lotto.repository'
 
 export abstract class LottoRepository {
 	abstract getById(id: string): Promise<LottoAggregate | undefined>

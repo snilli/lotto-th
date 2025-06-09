@@ -1,17 +1,17 @@
-import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service.js'
+import { LottoClientService } from '@app/@libs-lotto-client/lotto-client.service'
 import { Inject, Injectable } from '@nestjs/common'
-import { LottoAggregate } from '../../domain/entity/lotto.aggregate.js'
-import { LottoRepository } from '../../domain/repository/lotto.repository.js'
-import {
-	CheckLocalPrizeServiceInput,
-	CheckLottoPrizeDetailInput,
-	CreateLottoServiceInput,
-} from './interface/lotto.service.js'
+import { LottoAggregate } from '../../domain/entity/lotto.aggregate'
 import {
 	CheckLocalPrizeInput,
 	CheckLocalPrizeKind,
 	CheckLocalPrizeType,
-} from '../../domain/repository/interface/lotto.repository.js'
+} from '../../domain/repository/interface/lotto.repository'
+import { LottoRepository } from '../../domain/repository/lotto.repository'
+import {
+	CheckLocalPrizeServiceInput,
+	CheckLottoPrizeDetailInput,
+	CreateLottoServiceInput,
+} from './interface/lotto.service'
 
 @Injectable()
 export class LottoService {

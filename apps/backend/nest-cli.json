@@ -1,29 +1,41 @@
 {
-	"$schema": "https://json.schemastore.org/nest-cli",
-	"collection": "@nestjs/schematics",
-	"sourceRoot": "src",
-	"plugins": ["@nestjs/swagger"],
-	"compilerOptions": {
-		"deleteOutDir": true,
-		"builder": {
-			"type": "swc",
-			"options": {
-				"swcrcPath": ".swcrc"
-			}
-		},
-		"typeCheck": true
-	},
-	"projects": {
-		"default": {
-			"type": "application",
-			"entryFile": "server"
-		},
-		"migration": {
-			"type": "application",
-			"compilerOptions": {
-				"tsConfigPath": "./tsconfig.cli.json"
-			},
-			"entryFile": "main-cli"
-		}
-	}
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "plugins": [
+    "@nestjs/swagger"
+  ],
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "builder": {
+      "type": "swc",
+      "options": {
+        "swcrcPath": ".swcrc"
+      }
+    },
+    "typeCheck": true,
+    "webpack": true
+  },
+  "projects": {
+    "default": {
+      "type": "application",
+      "entryFile": "server"
+    },
+    "lotto-client": {
+      "type": "library",
+      "root": "libs/lotto-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/lotto-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lotto-client/tsconfig.lib.json"
+      }
+    },
+    "migration": {
+      "type": "application",
+      "compilerOptions": {
+        "tsConfigPath": "./tsconfig.cli.json"
+      },
+      "entryFile": "main-cli"
+    }
+  }
 }

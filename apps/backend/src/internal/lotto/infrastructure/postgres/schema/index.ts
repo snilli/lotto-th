@@ -1,5 +1,5 @@
-import { lotto } from './lotto.js'
+import { lotto } from './lotto'
 
-export { lotto } from './lotto.js'
+export { lotto } from './lotto'
 
 export const schema = { lotto: lotto }

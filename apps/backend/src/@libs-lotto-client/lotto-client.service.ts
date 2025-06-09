@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { load } from 'cheerio'
 import { isTag, isText } from 'domhandler'
 import { firstValueFrom } from 'rxjs'
-import { DateExtraction, WeeklyPrizeModel } from './interfaces.js'
+import { WeeklyPrizeModel, DateExtraction } from './interfaces'
 
 const monthMap = {
 	มกราคม: 1,

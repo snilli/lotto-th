@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
-import { DrizzleModule } from '../@libs-drizzle/drizzle.module.js'
-import { TimeModule } from '../@libs-time/time.module.js'
+import { DrizzleModule } from '../@libs-drizzle/drizzle.module'
+import { TimeModule } from '../@libs-time/time.module'
 
-import { HttpExceptionFilter } from './common/filter/http-exception.filter.js'
-import { LottoModule } from './lotto/lotto.module.js'
-import { schema } from './lotto/infrastructure/postgres/schema/index.js'
+import { HttpExceptionFilter } from './common/filter/http-exception.filter'
+import { schema } from './lotto/infrastructure/postgres/schema/index'
+import { LottoModule } from './lotto/lotto.module'
 
 @Module({
 	imports: [
