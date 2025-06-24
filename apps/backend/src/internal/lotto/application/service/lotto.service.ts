@@ -1,9 +1,12 @@
 import { LottoClientService } from '@app/lotto-client/lotto-client.service'
+import { PokemonNameService } from '@app/pokemon-name'
 import { Inject, Injectable } from '@nestjs/common'
 import { LottoAggregate } from '../../domain/entity/lotto.aggregate'
 import {
+	CheckGlobalPrizeResponse,
 	CheckLocalPrizeInput,
 	CheckLocalPrizeKind,
+	CheckLocalPrizeResponse,
 	CheckLocalPrizeType,
 } from '../../domain/repository/interface/lotto.repository'
 import { LottoRepository } from '../../domain/repository/lotto.repository'
@@ -17,12 +20,16 @@ import {
 export class LottoService {
 	constructor(
 		@Inject(LottoRepository) private readonly lottoRepo: LottoRepository,
-		private readonly lottoClientService: LottoClientService,
+		@Inject(LottoClientService) private readonly lottoClientService: LottoClientService,
+		@Inject(PokemonNameService) private readonly pokemonNameService: PokemonNameService,
 	) {}
 
-	async getCurrent() {
-		const { prizeList, ...lotto } = await this.lottoClientService.getCurrent()
+	async a(): Promise<never[]> {
+		return this.pokemonNameService.getAll()
+	}
 
+	async getCurrent(): Promise<LottoAggregate> {
+		const { prizeList, ...lotto } = await this.lottoClientService.getCurrent()
 		let res = await this.getById(lotto.weekly)
 		if (!res) {
 			res = await this.create({
@@ -44,11 +51,11 @@ export class LottoService {
 		return res
 	}
 
-	async getById(id: string) {
+	async getById(id: string): Promise<LottoAggregate | undefined> {
 		return await this.lottoRepo.getById(id)
 	}
 
-	async create(input: CreateLottoServiceInput) {
+	async create(input: CreateLottoServiceInput): Promise<LottoAggregate> {
 		const agg = new LottoAggregate({
 			id: input.id,
 			date: input.date,
@@ -66,7 +73,7 @@ export class LottoService {
 		return await this.lottoRepo.create(agg)
 	}
 
-	async batchCreate(inputs: CreateLottoServiceInput[]) {
+	async batchCreate(inputs: CreateLottoServiceInput[]): Promise<LottoAggregate[]> {
 		const aggs = inputs.map(
 			(input) =>
 				new LottoAggregate({
@@ -87,11 +94,14 @@ export class LottoService {
 		return await this.lottoRepo.batchCreate(aggs)
 	}
 
-	async checkGlobalPrize(date: string, numbers: string[]) {
+	async checkGlobalPrize(date: string, numbers: string[]): Promise<CheckGlobalPrizeResponse[]> {
 		return await this.lottoRepo.checkGlobalPrize(date, numbers)
 	}
 
-	async checkLocalPrize(date: string, input: CheckLocalPrizeServiceInput) {
+	async checkLocalPrize(
+		date: string,
+		input: CheckLocalPrizeServiceInput,
+	): Promise<CheckLocalPrizeResponse[] | undefined> {
 		const rInput: CheckLocalPrizeInput[] = []
 		for (const [kind, value] of Object.entries(input) as [CheckLocalPrizeKind, CheckLottoPrizeDetailInput][]) {
 			for (const [type, numbers] of Object.entries(value) as [CheckLocalPrizeType, string[]][]) {

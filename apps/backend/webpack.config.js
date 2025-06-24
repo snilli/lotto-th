@@ -1,5 +1,3 @@
-const { swcDefaultsFactory } = require('@nestjs/cli/lib/compiler/defaults/swc-defaults')
-
 module.exports = {
 	module: {
 		rules: [
@@ -8,7 +6,6 @@ module.exports = {
 				exclude: /node_modules/,
 				use: {
 					loader: 'swc-loader',
-					options: swcDefaultsFactory().swcOptions,
 				},
 			},
 		],

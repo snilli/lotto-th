@@ -1,8 +1,8 @@
 {
-	"packageManager": "pnpm@10.11.1",
+	"packageManager": "pnpm@10.12.1",
 	"volta": {
 		"node": "22.16.0",
-		"pnpm": "10.11.1"
+		"pnpm": "10.12.1"
 	},
 	"name": "lotto-api",
 	"version": "0.0.1",
@@ -39,18 +39,14 @@
 		"clean-all": "rm -rf dist && rm -rf .turbo && rm -rf node_modules"
 	},
 	"dependencies": {
-		"@codegenie/serverless-express": "^4.16.0",
-		"@nestjs/axios": "^4.0.0",
 		"@nestjs/cache-manager": "^3.0.1",
 		"@nestjs/common": "^11.1.3",
 		"@nestjs/config": "^4.0.2",
 		"@nestjs/core": "^11.1.3",
 		"@nestjs/platform-express": "^11.1.3",
 		"@nestjs/swagger": "^11.2.0",
-		"@types/aws-lambda": "^8.10.149",
 		"@vercel/postgres": "^0.10.0",
 		"agentkeepalive": "^4.6.0",
-		"axios": "^1.9.0",
 		"cheerio": "1.0.0",
 		"compression": "^1.8.0",
 		"dayjs": "^1.11.13",
@@ -60,22 +56,21 @@
 		"nest-commander": "^3.17.0",
 		"nestjs-zod": "next",
 		"reflect-metadata": "^0.2.2",
-		"rxjs": "^7.8.2",
-		"zod": "^3.25.46"
+		"zod": "^3.25.56"
 	},
 	"devDependencies": {
 		"@nestjs/cli": "^11.0.7",
 		"@nestjs/schematics": "^11.0.5",
-		"@nestjs/testing": "^11.1.2",
-		"@swc/core": "^1.11.29",
-		"@types/compression": "^1.8.0",
-		"@types/express": "^5.0.2",
+		"@nestjs/testing": "^11.1.3",
+		"@swc/core": "^1.11.31",
+		"@types/compression": "^1.8.1",
+		"@types/express": "^5.0.3",
 		"@types/supertest": "^6.0.3",
-		"@vitest/coverage-v8": "^3.1.4",
+		"@vitest/coverage-v8": "^3.2.3",
 		"domelementtype": "^2.3.0",
 		"domhandler": "^5.0.3",
 		"dotenv": "^16.5.0",
-		"drizzle-kit": "^0.30.6",
+		"drizzle-kit": "^0.31.1",
 		"eslint-plugin-drizzle": "^0.2.3",
 		"supertest": "^7.1.1",
 		"swc-loader": "^0.2.6",

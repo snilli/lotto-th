@@ -4,8 +4,8 @@ import { ExpressAdapter } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import compression from 'compression'
 import express from 'express'
-import { AppModule } from './internal/app.module'
-import { LottoModule } from './internal/lotto/lotto.module'
+import { LottoModule } from '../internal/lotto/lotto.module'
+import { AppModule } from '../internal/share/presentation/http/app.module'
 
 async function bootstrap(): Promise<void> {
 	const expressApp = express()
@@ -28,8 +28,8 @@ async function bootstrap(): Promise<void> {
 			include: [LottoModule],
 		},
 	)
-	SwaggerModule.setup('api', app, zodV4Document, {
-		jsonDocumentUrl: 'swagger/json',
+	SwaggerModule.setup('api-doc', app, zodV4Document, {
+		jsonDocumentUrl: 'api-doc/json',
 	})
 
 	await app.listen(8080)

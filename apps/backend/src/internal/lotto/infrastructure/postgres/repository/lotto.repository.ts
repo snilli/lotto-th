@@ -1,5 +1,5 @@
-import { InjectServiceTag } from '@app/@libs-drizzle/drizzle.decorator'
-import { DrizzleMainRepo } from '@app/@libs-drizzle/drizzle.repo'
+import { InjectServiceTag } from '@app/drizzle/drizzle.decorator'
+import { DrizzleMainRepo } from '@app/drizzle/drizzle.repo'
 import { LottoAggregate } from '@app/internal/lotto/domain/entity/lotto.aggregate'
 import {
 	CheckGlobalPrizeResponse,
@@ -27,7 +27,7 @@ export class DrizzleLottoRepository
 		super()
 	}
 
-	async getById(id: string) {
+	async getById(id: string): Promise<LottoAggregate | undefined> {
 		const model = await this.db.query.lotto
 			.findFirst({
 				where: (fields, operators) => operators.eq(fields.id, id),
@@ -41,7 +41,7 @@ export class DrizzleLottoRepository
 		return this.mapModelToAggregate(model)
 	}
 
-	async getAllById(ids: string[]) {
+	async getAllById(ids: string[]): Promise<LottoAggregate[]> {
 		const models = await this.db.query.lotto
 			.findMany({
 				where: (fields, operators) => operators.inArray(fields.id, ids),
@@ -102,7 +102,7 @@ export class DrizzleLottoRepository
 			.execute()
 	}
 
-	async create(agg: LottoAggregate) {
+	async create(agg: LottoAggregate): Promise<LottoAggregate> {
 		const model = this.mapAggregateToModel(agg)
 
 		const [res] = await this.db
@@ -115,7 +115,7 @@ export class DrizzleLottoRepository
 		return this.mapModelToAggregate(res)
 	}
 
-	async batchCreate(aggs: LottoAggregate[]) {
+	async batchCreate(aggs: LottoAggregate[]): Promise<LottoAggregate[]> {
 		const models = await this.db
 			.insert(lotto)
 			.values(aggs.map((agg) => this.mapAggregateToModel(agg)))

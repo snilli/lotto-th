@@ -1,5 +1,9 @@
 import { LottoAggregate } from '@app/internal/lotto/domain/entity/lotto.aggregate'
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common'
+import {
+	CheckGlobalPrizeResponse,
+	CheckLocalPrizeResponse,
+} from '@app/internal/lotto/domain/repository/interface/lotto.repository'
+import { Body, Controller, Get, HttpCode, HttpStatus, Inject, Param, Post } from '@nestjs/common'
 import { ApiBody, ApiOkResponse, ApiParam } from '@nestjs/swagger'
 import { ZodSerializerDto } from 'nestjs-zod'
 import { LottoService } from '../../../application/service/lotto.service'
@@ -17,7 +21,7 @@ import { LottoModel, LottoModelDTO } from '../dto/lotto.model'
 
 @Controller('lotto')
 export class LottoController {
-	constructor(private readonly lottaService: LottoService) {}
+	constructor(@Inject(LottoService) private readonly lottaService: LottoService) {}
 
 	// @Get('/pages')
 	// @ZodSerializerDto(LottoModelDTO)
@@ -26,10 +30,15 @@ export class LottoController {
 	// 	return await this.lottoClientService.getAll()
 	// }
 
+	@Get('/aaa')
+	async getA(): Promise<never[]> {
+		return this.lottaService.a()
+	}
+
 	@Get('/current')
 	@ZodSerializerDto(LottoModelDTO)
 	@ApiOkResponse({ type: LottoModelDTO })
-	async getCurrent() {
+	async getCurrent(): Promise<LottoModel> {
 		const res = await this.lottaService.getCurrent()
 		return this.mapAggregateToModel(res)
 	}
@@ -40,7 +49,10 @@ export class LottoController {
 	@ApiBody({ type: CheckGlobalLottoPrizeBody })
 	@ApiOkResponse({ type: [CheckGlobalLottoPrizeResponse] })
 	@ZodSerializerDto(CheckGlobalLottoPrizeResponse)
-	async checkGlobalPrize(@Param() params: CheckGlobalLottoPrizeParam, @Body() payload: CheckGlobalLottoPrizeBody) {
+	async checkGlobalPrize(
+		@Param() params: CheckGlobalLottoPrizeParam,
+		@Body() payload: CheckGlobalLottoPrizeBody,
+	): Promise<CheckGlobalPrizeResponse[]> {
 		return await this.lottaService.checkGlobalPrize(params.date, payload.numbers)
 	}
 
@@ -50,12 +62,15 @@ export class LottoController {
 	@ApiBody({ type: CheckLocalLottoPrizeBody })
 	@ApiOkResponse({ type: [CheckLocalLottoPrizeResponse] })
 	@ZodSerializerDto(CheckLocalLottoPrizeResponse)
-	async checkLocalPrize(@Param() params: CheckLocalLottoPrizeParam, @Body() payload: CheckLocalLottoPrizeBody) {
+	async checkLocalPrize(
+		@Param() params: CheckLocalLottoPrizeParam,
+		@Body() payload: CheckLocalLottoPrizeBody,
+	): Promise<CheckLocalPrizeResponse[] | undefined> {
 		return await this.lottaService.checkLocalPrize(params.date, payload)
 	}
 
 	@Get('/ping')
-	ping() {
+	ping(): string {
 		return 'ok'
 	}
 

@@ -1,12 +1,12 @@
-import { DrizzleModule } from '@app/@libs-drizzle/drizzle.module'
 import { LottoService } from '@app/internal/lotto/application/service/lotto.service'
 import { LottoRepository } from '@app/internal/lotto/domain/repository/lotto.repository'
 import { DrizzleLottoRepository } from '@app/internal/lotto/infrastructure/postgres/repository/lotto.repository'
 import { schema } from '@app/internal/lotto/infrastructure/postgres/schema/index'
+import { LottoClientModule } from '@app/lotto-client'
 import { Test, TestingModule } from '@nestjs/testing'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { LottoController } from './lotto.controller'
-import { LottoClientModule } from '@app/lotto-client'
+import { DrizzleModule } from '@app/drizzle'
 
 describe('AppController', () => {
 	let lottoController: LottoController

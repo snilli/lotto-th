@@ -17,13 +17,13 @@ export class DrizzleService<T extends Record<string, unknown> = Record<string, u
 		super(sql, options.config ?? {})
 	}
 
-	async onModuleInit() {
+	async onModuleInit(): Promise<void> {
 		await migrate(this, {
 			migrationsFolder: './drizzle',
 		})
 	}
 
-	async migration(dir: string) {
+	async migration(dir: string): Promise<void> {
 		await migrate(this, { migrationsFolder: dir })
 	}
 }

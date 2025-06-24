@@ -17,7 +17,7 @@ export class DrizzleModule extends ConfigurableModuleClass {
 				...providers,
 				{
 					provide: GenServiceTag(tag),
-					useFactory: () => {
+					useFactory: (): DrizzleService => {
 						return new DrizzleService(options)
 					},
 				},
@@ -46,7 +46,7 @@ export class DrizzleModule extends ConfigurableModuleClass {
 				...providers,
 				{
 					provide: GenServiceTag(tag),
-					useFactory: (config: DrizzleConfigOption) => {
+					useFactory: (config: DrizzleConfigOption): DrizzleService => {
 						return new DrizzleService(config)
 					},
 					inject: [MODULE_OPTIONS_TOKEN],

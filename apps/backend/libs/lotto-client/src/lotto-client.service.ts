@@ -1,8 +1,6 @@
-import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
-import { load } from 'cheerio'
+import { fromURL } from 'cheerio'
 import { isTag, isText } from 'domhandler'
-import { firstValueFrom } from 'rxjs'
 import { DateExtraction, WeeklyPrizeModel } from './interfaces'
 
 const monthMap = {
@@ -21,74 +19,72 @@ const monthMap = {
 } as const
 
 const dateAfterChangeFormat = new Date('2000-04-01').getTime()
+const baseUrl = 'https://www.myhora.com'
 
 @Injectable()
 export class LottoClientService {
-	constructor(private readonly httpService: HttpService) {}
+	constructor() {}
 
-	async getAll() {
-		const { data: html } = await firstValueFrom(this.httpService.get<string>('/lottery'))
-		const $ = load(html)
-		const yearPages: Promise<string>[] = []
+	async getAll(): Promise<WeeklyPrizeModel[]> {
+		const $ = await fromURL(baseUrl + '/lottery')
+		const weeklyPrizesPromise = $('.lot-cy')
+			.map((_, ele) => {
+				const href = $(ele).children('a')[0].attribs.href
+				return this.getYearWeekPath(href)
+			})
+			.get()
 
-		$('.lot-cy').each((_, ele) => {
-			const href = $(ele).children('a')[0].attribs.href
-			yearPages.push(this.getHtml(href))
-		})
+		const allWeeklyPrize = (await Promise.all(weeklyPrizesPromise)).flat()
 
-		const allWeeklyPrize: WeeklyPrizeModel[] = []
-		const weeklyPagesPromises: (Promise<string> | undefined)[] = []
-
-		for (const yearPage of await Promise.all(yearPages)) {
-			for (const weeklyPrize of this.getYearWeekPath(yearPage)) {
-				allWeeklyPrize.push(weeklyPrize)
-				weeklyPagesPromises.push(weeklyPrize.detailUrl ? this.getHtml(weeklyPrize.detailUrl) : undefined)
-			}
-		}
-
-		const weeklyPages = await Promise.all(weeklyPagesPromises)
-		for (const [idx, info] of allWeeklyPrize.entries()) {
-			if (!info.detailUrl) {
-				console.log(1)
+		const promises: Promise<WeeklyPrizeModel>[] = []
+		for (const weeklyPrize of allWeeklyPrize) {
+			if (!weeklyPrize.detailUrl) {
 				continue
 			}
-			this.weeklyPage(info, weeklyPages[idx])
+			promises.push(this.weeklyPage(weeklyPrize))
 		}
+
+		await Promise.all(promises)
 
 		return allWeeklyPrize
 	}
 
-	async getAllWithPagination(page: number = 1) {
-		const { data: html } = await firstValueFrom(this.httpService.get<string>(''))
-		const $ = load(html)
-		const pages: string[] = []
-		$('.lot-cy').each((_, ele) => {
-			pages.push($(ele).children('a')[0].attribs.href)
-		})
+	async getAllWithPagination(page: number = 1): Promise<{
+		data: WeeklyPrizeModel[]
+		count: number
+		pages: number
+		prev: number | undefined
+		next: number | undefined
+	}> {
+		const $ = await fromURL(baseUrl + '/lottery')
+		const hrefs = $('.lot-cy')
+			.map((_, ele) => {
+				return $(ele).children('a')[0].attribs.href
+			})
+			.get()
 
-		const yearPage = await this.getHtml(pages[page - 1])
-		const weeklyInfo = this.getYearWeekPath(yearPage)
-		const weeklyPages = await Promise.all(
-			weeklyInfo.map((info) => (info.detailUrl ? this.getHtml(info.detailUrl) : undefined)),
-		)
+		const weeklyPrizes = await this.getYearWeekPath(hrefs[page - 1])
+		const promises: Promise<WeeklyPrizeModel>[] = []
 
-		for (const [idx, info] of weeklyInfo.entries()) {
-			if (!info.detailUrl) {
+		for (const weeklyPrize of weeklyPrizes) {
+			if (!weeklyPrize.detailUrl) {
 				continue
 			}
-			this.weeklyPage(info, weeklyPages[idx])
+			promises.push(this.weeklyPage(weeklyPrize))
 		}
 
+		await Promise.all(promises)
+
 		return {
-			data: weeklyInfo,
-			count: weeklyInfo.length,
-			pages: pages.length,
-			prev: page < 2 || page >= pages.length ? undefined : page - 1,
-			next: page >= pages.length ? undefined : page + 1,
+			data: weeklyPrizes,
+			count: weeklyPrizes.length,
+			pages: hrefs.length,
+			prev: page < 2 || page >= hrefs.length ? undefined : page - 1,
+			next: page >= hrefs.length ? undefined : page + 1,
 		}
 	}
 
-	async *generatorPage(page = 1) {
+	async *generatorPage(page = 1): AsyncGenerator<WeeklyPrizeModel[], void, unknown> {
 		let next: number | undefined = page
 		while (next) {
 			const response = await this.getAllWithPagination(next)
@@ -97,8 +93,7 @@ export class LottoClientService {
 		}
 	}
 
-	async getCurrent() {
-		const page = await this.getHtml('')
+	async getCurrent(): Promise<WeeklyPrizeModel> {
 		const weeklyInfo: WeeklyPrizeModel = {
 			prizeList: {
 				prize1: '',
@@ -113,16 +108,11 @@ export class LottoClientService {
 			year: 0,
 			month: 0,
 			date: 0,
-			detailUrl: '',
+			detailUrl: '/lottery',
 		}
-		this.weeklyPage(weeklyInfo, page)
+		await this.weeklyPage(weeklyInfo)
 
 		return weeklyInfo
-	}
-
-	private async getHtml(url: string) {
-		const { data: html } = await firstValueFrom(this.httpService.get<string>(url))
-		return html
 	}
 
 	private extractDate<T extends keyof typeof monthMap>([dayRaw, monthTh, yearTh]: [
@@ -141,8 +131,9 @@ export class LottoClientService {
 		}
 	}
 
-	private getYearWeekPath(html: string): WeeklyPrizeModel[] {
-		const $ = load(html)
+	private async getYearWeekPath(urlPath: string): Promise<WeeklyPrizeModel[]> {
+		const $ = await fromURL(baseUrl + urlPath)
+
 		const titleATag = $('.content-main-fullwidth')
 			.find('a')
 			.filter(
@@ -220,12 +211,8 @@ export class LottoClientService {
 		return info
 	}
 
-	private weeklyPage(model: WeeklyPrizeModel, html?: string) {
-		if (!html) {
-			return
-		}
-
-		const $ = load(html)
+	private async weeklyPage(model: WeeklyPrizeModel): Promise<WeeklyPrizeModel> {
+		const $ = await fromURL(baseUrl + model.detailUrl)
 		const prizeList = model.prizeList
 		if (!prizeList.prize1) {
 			const dateExtracted = this.extractDate(

@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -29,15 +28,33 @@
       "@app/*": [
         "src/*"
       ],
+      "@app/drizzle": [
+        "libs/drizzle/src"
+      ],
+      "@app/drizzle/*": [
+        "libs/drizzle/src/*"
+      ],
       "@app/lotto-client": [
         "libs/lotto-client/src"
       ],
       "@app/lotto-client/*": [
         "libs/lotto-client/src/*"
+      ],
+      "@app/pokemon-name": [
+        "libs/pokemon-name/src"
+      ],
+      "@app/pokemon-name/*": [
+        "libs/pokemon-name/src/*"
+      ],
+      "@app/time": [
+        "libs/time/src"
+      ],
+      "@app/time/*": [
+        "libs/time/src/*"
       ]
     }
   },
   "exclude": [
-    "src/lotto/schema/index.ts"
+    "src/lotto/schema/index.ts",
   ]
 }
