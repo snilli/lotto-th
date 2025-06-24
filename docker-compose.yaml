@@ -1,0 +1,12 @@
+services:
+  lotto-api:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile.node
+    container_name: lotto-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "3000:3000"

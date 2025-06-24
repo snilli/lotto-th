@@ -1,6 +1,6 @@
-import turbo from 'eslint-plugin-turbo'
+const turbo = require('eslint-plugin-turbo')
 
-export default [
+module.exports = [
 	{
 		plugins: {
 			turbo,

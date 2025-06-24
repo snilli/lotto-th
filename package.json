@@ -10,7 +10,7 @@
 	"engines": {
 		"node": "22.x"
 	},
-	"packageManager": "pnpm@10.11.1",
+	"packageManager": "pnpm@10.12.1",
 	"volta": {
 		"node": "22.16.0"
 	},
@@ -26,26 +26,14 @@
 	"devDependencies": {
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.28.0",
-		"@next/eslint-plugin-next": "^15.3.3",
-		"@pulumi/aws": "^6.81.0",
-		"@pulumi/aws-native": "^1.28.0",
-		"@pulumi/awsx": "^2.21.1",
-		"@pulumi/github": "^6.7.2",
-		"@pulumi/pulumi": "^3.173.0",
-		"@testing-library/react": "^16.3.0",
 		"@types/node": "^22.15.29",
-		"@types/react": "^19.1.6",
-		"@vitejs/plugin-react": "^4.5.0",
 		"eslint": "^9.28.0",
 		"eslint-config-prettier": "^10.1.5",
 		"eslint-config-turbo": "^2.5.4",
 		"eslint-plugin-prettier": "^5.4.1",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-turbo": "^2.5.4",
 		"globals": "^16.2.0",
 		"prettier": "^3.5.3",
-		"tailwindcss": "^4.1.8",
 		"turbo": "^2.5.4",
 		"typescript": "^5.8.3",
 		"typescript-eslint": "^8.33.0",
